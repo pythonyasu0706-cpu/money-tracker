@@ -27,9 +27,14 @@ app = Flask(__name__)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'finance.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# DATABASE_URL = os.getenv("DATABASE_URL")
+# if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+#     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
