@@ -1,0 +1,295 @@
+<!-- templates/analysis.html -->
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Inter:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "secondary-container": "#66affe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f7fafc",
+                        "on-tertiary-fixed-variant": "#00522f",
+                        "tertiary": "#002713",
+                        "tertiary-container": "#003f23",
+                        "inverse-surface": "#2d3133",
+                        "inverse-on-surface": "#eef1f3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#002110",
+                        "on-surface-variant": "#43474e",
+                        "outline-variant": "#c4c6cf",
+                        "surface-variant": "#e0e3e5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e5e9eb",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "tertiary-fixed-dim": "#74db9d",
+                        "surface-container-low": "#f1f4f6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#181c1e",
+                        "surface-tint": "#455f88",
+                        "error-container": "#ffdad6",
+                        "surface": "#f7fafc",
+                        "on-secondary-fixed-variant": "#00497e",
+                        "on-primary-container": "#86a0cd",
+                        "on-surface": "#181c1e",
+                        "outline": "#74777f",
+                        "on-primary-fixed": "#001b3c",
+                        "secondary": "#0061a5",
+                        "secondary-fixed": "#d2e4ff",
+                        "surface-container": "#ebeef0",
+                        "surface-bright": "#f7fafc",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#adc7f7",
+                        "primary": "#002045",
+                        "primary-container": "#1a365d",
+                        "primary-fixed": "#d6e3ff",
+                        "on-secondary-fixed": "#001d37",
+                        "on-secondary-container": "#004172",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#9fcaff",
+                        "tertiary-fixed": "#91f8b8",
+                        "surface-dim": "#d7dadc",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#4bb278",
+                        "inverse-primary": "#adc7f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Noto Sans JP"],
+                        "body-md": ["Noto Sans JP"],
+                        "h2": ["Noto Sans JP"],
+                        "body-sm": ["Noto Sans JP"],
+                        "label-caps": ["Inter"],
+                        "data-entry": ["Inter"],
+                        "body-lg": ["Noto Sans JP"],
+                        "h1": ["Noto Sans JP"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-entry": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["30px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32 overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full z-50 fixed top-0 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
+    <div class="flex items-center gap-4">
+        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">会計分析</h1>
+    </div>
+    <div class="font-h2 text-h2 text-primary dark:text-primary-fixed">OCR Expense</div>
+</header>
+<div>
+<main class="max-w-[1200px] mx-auto pt-24 px-margin-mobile md:px-margin-desktop">
+    <!-- Search and Filter Section -->
+    <!-- <section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md">
+        <div class="relative flex-grow">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input id="searchInput"
+            class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-data-entry focus:border-secondary focus:ring-1 focus:ring-secondary transition-all outline-none"
+            placeholder="店舗名やカテゴリで検索"
+            type="text"/>
+        </div>
+        <div class="flex gap-stack-sm overflow-x-auto pb-2 scrollbar-hide">
+            <button data-filter="all" class="filter-btn bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label-caps whitespace-nowrap">すべて</button>
+            <button data-filter="食費" class="filter-btn bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">食費</button>
+            <button data-filter="消耗品費" class="filter-btn bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">消耗品費</button>
+            <button data-filter="交通費" class="filter-btn bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">交通費</button>
+            <button data-filter="その他" class="filter-btn bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">その他</button>
+        </div>
+    </section> -->
+    <!-- History Content -->
+    <div class="space-y-stack-lg">
+
+    {% set color_map = {
+        "食費": "bg-amber-300 text-on-tertiary-fixed-variant",
+        "交通費": "bg-purple-300 text-on-secondary-fixed-variant",
+        "消耗品費": "bg-tertiary-fixed text-on-surface-variant",
+        "交際費": "bg-primary-fixed text-on-primary-fixed-variant",
+        "通信費": "bg-secondary-container text-on-secondary-container",
+        "水道光熱費": "bg-tertiary-container text-on-tertiary-container",
+        "地代家賃": "bg-primary-container text-on-primary-container",
+        "広告宣伝費": "bg-secondary-fixed text-on-secondary-fixed-variant",
+        "会議費": "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+        "雑費": "bg-surface-container-high text-on-surface-variant",
+        "給与": "bg-red-300 text-on-primary-fixed-variant"
+    } %}
+
+    <select id="monthSelect"
+        class="px-3 py-2 border rounded bg-surface-container-lowest w-[150px]">
+    {% for m in months %}
+        <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>
+            {{ m }}
+        </option>
+    {% endfor %}
+    </select>
+
+    <!-- Month Group: December -->
+    {% for month, items in grouped_expenses.items() %}
+    <section class="month-section">
+        <!--PC：テーブル表示 -->
+        <div class="hidden md:block overflow-x-auto">
+            <table class="min-w-[700px] w-full border border-outline-variant rounded-lg">
+                <thead class="bg-surface-container-high text-left">
+                <tr>
+                    <th class="p-3">日付</th>
+                    <th class="p-3">店名</th>
+                    <th class="p-3">カテゴリ</th>
+                    <th class="p-3 text-right">支出</th>
+                    <th class="p-3 text-right">収入</th>
+                    <th class="p-3 text-right"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for e in items %}
+                <tr class="border-t hover:bg-surface-container transition cursor-pointer"
+                    onclick="location.href='{{ url_for('edit_expense', id=e.id) }}'">
+                    
+                    <td class="p-3 text-sm text-on-surface-variant">
+                    {{ e.receipt_date.strftime("%Y.%m.%d") if e.receipt_date else e.created_at.strftime("%Y.%m.%d") }}
+                    </td>
+
+                    <td class="p-3 font-medium">
+                    {{ e.shop_name }}
+                    </td>
+
+                    <td class="p-3">
+                    <span class="px-2 py-1 rounded text-xs
+                        {{ color_map.get(e.category, 'bg-surface-container-high text-on-surface-variant') }}">
+                        {{ e.category or '未分類' }}
+                    </span>
+                    </td>
+                    <td class="p-3 text-right font-bold text-secondary">
+                    {% if e.type == "expense" %}
+                        ¥{{ e.amount }}
+                    {% endif %}
+                    </td>
+
+                    <td class="p-3 text-right font-bold text-green-600">
+                    {% if e.type == "income" %}
+                        ¥{{ e.amount }}
+                    {% endif %}
+                    </td>
+                    <td class="p-3 text-right">
+                    <a href="{{ url_for('edit_expense', id=e.id) }}"
+                        class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                        onclick="event.stopPropagation()">
+                        編集
+                    </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- スマホ：カード表示 -->
+        <div class="md:hidden space-y-3">
+        {% for e in items %}
+        <div class="border rounded-lg p-3 bg-white shadow-sm">
+
+            <div class="flex justify-between">
+            <span class="text-sm text-gray-500">
+                {{ e.receipt_date.strftime("%Y.%m.%d") }}
+            </span>
+            <span class="font-bold">
+                ¥{{ e.amount }}
+            </span>
+            </div>
+
+            <div class="mt-1 font-medium">
+            {{ e.shop_name }}
+            </div>
+
+            <div class="text-xs text-gray-500">
+            {{ e.category }}
+            </div>
+
+        </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    {% endfor %}
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <section class="col-span-5 flex flex-col items-center justify-center mb-10 overflow-hidden">
+            <h2 class="text-lg font-bold mb-2">カテゴリ別支出</h2>
+            <canvas id="categoryChart" class="w-full max-w-full block"></canvas>
+        </section>
+        <section class="col-span-7 flex flex-col items-center justify-center mb-10 overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">今月の収支</h2>
+        <canvas id="monthlyChart" class="w-full max-w-full block"></canvas>
+        </section>
+    </section>
+    <section class="flex flex-col items-center justify-center mb-10 overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">日別支出</h2>
+        <canvas id="dailyChart" class="w-full max-w-full block"></canvas>
+    </section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 h-16 flex items-center text-zenter border-t bg-surface-container-lowest dark:bg-on-background shadow-[0px_-4px_12px_rgba(26,54,93,0.05)] z-50">
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('index') }}">
+<span class="material-symbols-outlined block leading-none">add_a_photo</span>
+<span class="font-label-caps text-label-caps">アップロード</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('history') }}">
+<span class="material-symbols-outlined block leading-none">history</span>
+<span class="font-label-caps text-label-caps">履歴</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('analysis') }}">
+<span class="material-symbols-outlined block leading-none">analytics</span>
+<span class="font-label-caps text-label-caps">分析</span>
+</a>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const DAILY_DATA = {{ daily_data | tojson }};
+    const CATEGORY_DATA = {{ category_data | tojson }};
+    const MONTHLY_SUMMARY = {{ monthly_summary | tojson }};
+</script>
+<script src="/static/js/analysis.js"></script>
+</body>
+</html>

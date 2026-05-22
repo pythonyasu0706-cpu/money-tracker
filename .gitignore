@@ -1,0 +1,15 @@
+# Pythonの自動キャッシュを防止
+__pycache__/ 
+# コンパイル済みファイルの防止
+*.pyc
+# Macのゴミファイルの防止
+.DS_Store
+# APIキーなどの秘密情報を防止
+.env
+.vscode/
+logs/
+migrate_status
+*.pptx
+*.docx
+*.zip
+

@@ -1,0 +1,316 @@
+<!-- /template/ocr_edit.html -->
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "secondary-container": "#66affe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f7fafc",
+                        "on-tertiary-fixed-variant": "#00522f",
+                        "tertiary": "#002713",
+                        "tertiary-container": "#003f23",
+                        "inverse-surface": "#2d3133",
+                        "inverse-on-surface": "#eef1f3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#002110",
+                        "on-surface-variant": "#43474e",
+                        "outline-variant": "#c4c6cf",
+                        "surface-variant": "#e0e3e5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e5e9eb",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "tertiary-fixed-dim": "#74db9d",
+                        "surface-container-low": "#f1f4f6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#181c1e",
+                        "surface-tint": "#455f88",
+                        "error-container": "#ffdad6",
+                        "surface": "#f7fafc",
+                        "on-secondary-fixed-variant": "#00497e",
+                        "on-primary-container": "#86a0cd",
+                        "on-surface": "#181c1e",
+                        "outline": "#74777f",
+                        "on-primary-fixed": "#001b3c",
+                        "secondary": "#0061a5",
+                        "secondary-fixed": "#d2e4ff",
+                        "surface-container": "#ebeef0",
+                        "surface-bright": "#f7fafc",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#adc7f7",
+                        "primary": "#002045",
+                        "primary-container": "#1a365d",
+                        "primary-fixed": "#d6e3ff",
+                        "on-secondary-fixed": "#001d37",
+                        "on-secondary-container": "#004172",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#9fcaff",
+                        "tertiary-fixed": "#91f8b8",
+                        "surface-dim": "#d7dadc",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#4bb278",
+                        "inverse-primary": "#adc7f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Noto Sans JP"],
+                        "body-md": ["Noto Sans JP"],
+                        "h2": ["Noto Sans JP"],
+                        "body-sm": ["Noto Sans JP"],
+                        "label-caps": ["Inter"],
+                        "data-entry": ["Inter"],
+                        "body-lg": ["Noto Sans JP"],
+                        "h1": ["Noto Sans JP"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-entry": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["30px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+        .ocr-highlight { position: absolute; background: rgba(0, 97, 165, 0.15); border: 1px solid rgba(0, 97, 165, 0.4); pointer-events: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full z-50 fixed top-0 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center p-2 rounded-full hover:opacity-80 transition-opacity scale-95 active:scale-90 transition-transform">
+<h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">解析内容の確認</h1>
+</div>
+<div class="font-h2 text-h2 text-primary dark:text-primary-fixed">OCR Expense</div>
+</header>
+
+
+<main class="pt-24 px-margin-mobile max-w-container-max mx-auto flex flex-col gap-8">
+<!-- Page Title -->
+    <div class="flex flex-col gap-stack-md max-w-container-max mx-auto w-full">
+        <section class="text-center space-y-stack-sm">
+            <h2 class="font-h1 text-h1 text-primary">読み取り結果</h2>
+            <p class="font-body-sm text-on-surface-variant mt-2">OCRで抽出されたテキストの内容を確認してください。</p>
+        </section>
+        <!-- 上エリア -->
+        <div id="resultArea" class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            <!-- 左: Receipt Preview -->
+            <section class="w-full h-full md:h-[70vh]">
+            <div class="h-full flex flex-col bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0px_4px_12px_rgba(26,54,93,0.05)] overflow-hidden">
+                <div class="p-4 border-b border-surface-variant flex justify-between items-center">
+                <span class="font-label-caps text-label-caps text-on-surface-variant">RECEIPT PREVIEW</span>
+                </div>
+                <div class="relative bg-surface-container-low flex items-center justify-center group">
+                    <img alt="Receipt image" class="w-full h-full object-cover p-4 opacity-90" data-alt="A clear, high-resolution photograph of a standard paper receipt held against a dark, minimalist wooden table. The lighting is bright and even, highlighting the Japanese text and numerical data for OCR processing. The aesthetic is clean and professional, using a soft blue tint to highlight areas like store names and totals where the AI is extracting data. This image represents a functional and modern financial management workflow."
+                    src="{{ data.image_url or '' }}"/>
+                </div>
+            </div>
+            </section>
+
+            <!-- 右: Extracted Text -->
+            <div class="flex flex-col md:h-[70vh]">
+                <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0px_4px_12px_rgba(26,54,93,0.05)] flex flex-col h-full overflow-hidden">
+                    <div class="p-stack-md border-b border-surface-variant flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="font-body-sm text-tertiary-fixed-dim font-bold">テキスト抽出完了</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-y-auto min-h-0 p-stack-md custom-scroll">
+                        <pre id="ocrText" class="font-data-entry text-on-surface-variant text-sm leading-relaxed whitespace-pre-wrap"></pre>
+                        <!-- <pre id="ocrText" class="bg-gray-100 p-4 rounded"></pre> -->
+                    </div>
+                </div>
+            </div>
+    </div>
+    <section class="text-center space-y-stack-sm">
+        <h2 class="font-h1 text-h1 text-primary">会計情報を確認・編集</h2>
+    </section>
+    <!-- 会計入力エリア -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-stretch">
+        <div id="formArea_left" class="bg-surface-container-lowest h-full">
+            <!-- Main Input Fields -->
+            <div class="h-full bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant shadow-[0px_4px_12px_rgba(26,54,93,0.05)] flex flex-col gap-stack-md">
+                <!-- Store Name -->
+                <div class="flex flex-col gap-unit relative">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant opacity-80">店名</label>
+                    </div>
+                    <div class="relative group">
+                        <input id="storeName" class="w-full
+                                    bg-white
+                                    border
+                                    border-outline-variant
+                                    rounded-lg p-3
+                                    font-data-entry
+                                    text-data-entry
+                                    focus:border-secondary
+                                    focus:ring-1
+                                    focus:ring-secondary
+                                    transition-all
+                                    outline-none"
+                                    type="text" />
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-40 group-hover:opacity-100 transition-opacity">
+                            <span class="material-symbols-outlined text-on-surface-variant" data-icon="edit">edit</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Date -->
+                <div class="flex flex-col gap-unit">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant opacity-80">日付</label>
+                    </div>
+                    <div class="relative group">
+                        <input id="date" class="w-full
+                                    bg-white
+                                    border
+                                    border-outline-variant
+                                    rounded-lg p-3
+                                    font-data-entry
+                                    text-data-entry
+                                    focus:border-secondary
+                                    focus:ring-1
+                                    focus:ring-secondary
+                                    transition-all
+                                    outline-none"
+                                    type="date"/>
+                    </div>
+                </div>
+                <!-- Amount -->
+                <div class="flex flex-col gap-unit">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant opacity-80">金額</label>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 font-h2 text-h2 text-on-surface-variant">¥</span>
+                        <input id="amount" class="w-full
+                                    bg-white border
+                                    border-outline-variant
+                                    rounded-lg p-3
+                                    pl-10 font-h2 text-h2
+                                    text-secondary
+                                    focus:border-secondary
+                                    focus:ring-1
+                                    focus:ring-secondary
+                                    transition-all outline-none"
+                                    type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="formArea_right" class="bg-surface-container-lowest h-full">
+            <!-- Financial Details Card -->
+            <div class="h-full
+                        bg-surface-container-lowest
+                        p-stack-md rounded-xl
+                        border border-outline-variant
+                        shadow-[0px_4px_12px_rgba(26,54,93,0.05)]
+                        flex flex-col gap-stack-md">
+            <!-- Account Category (Suggestions) -->
+                <div class="flex flex-col gap-unit">
+                    <div class="flex justify-between items-center">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant opacity-80">
+                            勘定科目 (AI提案)
+                        </label>
+                        <span class="flex items-center gap-1 text-[#b45309] bg-[#fef3c7] px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            <span class="material-symbols-outlined text-[12px]" data-icon="info">info</span>
+                            確認推奨
+                        </span>
+                    </div>
+                    <!-- ★ここにJSでボタン生成 -->
+                    <div id="categoryArea" class="flex flex-wrap gap-2">
+                    </div>
+
+                    <!-- ▼隠しUI -->
+                    <select id="categorySelect" class="mt-2 border p-2 rounded w-full">
+                        <option value="">選択してください</option>
+                    </select>
+                    <!-- 手入力 -->
+                    <div class="flex flex-col gap-unit">
+                        <label class="font-label-caps text-label-caps text-on-surface-variant opacity-80">手入力</label>
+                        <input id="customCategory"
+                            type="text"
+                            class="mt-2 border p-2 rounded w-full"
+                            placeholder="勘定科目を入力">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Action Buttons -->
+     <div class="flex flex-col sm:flex-row gap-stack-md mt-4 mb-28">
+        <button type="button" id="saveBtn" class="flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" data-icon="save" style="font-variation-settings: 'FILL' 1;">save</span>
+                    保存する
+                </button>
+        <button id="deleteBtn" class="hidden flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                    削除
+                </button>
+    </div>
+
+</main>
+
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 h-16 flex items-center text-zenter border-t bg-surface-container-lowest dark:bg-on-background shadow-[0px_-4px_12px_rgba(26,54,93,0.05)] z-50">
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('index') }}">
+<span class="material-symbols-outlined block leading-none">add_a_photo</span>
+<span class="font-label-caps text-label-caps">アップロード</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('history') }}">
+<span class="material-symbols-outlined block leading-none">history</span>
+<span class="font-label-caps text-label-caps">履歴</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors scale-95 active:scale-90 transition-transform"
+href="{{ url_for('analysis') }}">
+<span class="material-symbols-outlined block leading-none">analytics</span>
+<span class="font-label-caps text-label-caps">分析</span>
+</a>
+</nav>
+
+<script>
+    window.INIT_DATA = {{ data | tojson }};
+</script>
+<script src="/static/js/ocr_edit.js"></script>
+</body></html>
