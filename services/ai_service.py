@@ -17,9 +17,6 @@ class ReceiptAIService:
             api_key=os.getenv("OPENAI_API_KEY")
         )
 
-class ReceiptAIService:
-    def __init__(self):
-        self.client = client
 
     def parse(self, text):
         # ここでテキストを解析して、必要な情報を抽出するロジックを実装します。
