@@ -1,14 +1,18 @@
 # app.pyURL
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from werkzeug.utils import secure_filename
-from services.ocr_service import OCRService
-from services.ai_service import ReceiptAIService
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for,flash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
+# from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+from services.ocr_service import OCRService
+from services.ai_service import ReceiptAIService
 from collections import defaultdict
 import traceback
 from datetime import datetime, timedelta,timezone,date
 import uuid
+import resend
 from collections import defaultdict
 from dateutil import parser
 import cloudinary
@@ -17,12 +21,12 @@ from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
 
-# ================
-# インスタンス生成
-# ================
 
 load_dotenv()
 
+# ================
+# インスタンス生成
+# ================
 app = Flask(__name__)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -34,10 +38,16 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 # app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+resend.api_key = os.environ.get("RESEND_API_KEY")
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
     api_key=os.getenv("CLOUDINARY_API_KEY"),
@@ -63,20 +73,27 @@ class Transaction(db.Model):
     raw_text = db.Column(db.Text)
     receipt_date = db.Column(db.Date)
     image_path = db.Column(db.String(300))
+    image_public_id = db.Column(db.String(255))
     created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     status = db.Column(db.String(20), default="draft")
     type = db.Column(db.String(20), default="expense") # "expense" or "income"
     source = db.Column(db.String(10))  # "ocr" or "manual"
     expires_at = db.Column(db.DateTime)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255))
     is_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    verification_token = db.Column(db.String(255))
+    verification_token = db.Column(db.String(255), index=True, unique=True)
     token_expiry = db.Column(db.DateTime)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 # uploadsディレクトリが存在しない場合は作成
 # os.makedirs("static/uploads", exist_ok=True)
@@ -97,6 +114,24 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(func=cleanup_drafts, trigger="interval", hours=1)
 scheduler.start()
 
+# メール送信関数
+def send_verification_email(user):
+    token = user.verification_token
+
+    verify_url = f"https://your-domain.com/verify-email/{token}"
+
+    resend.Emails.send({
+        "from": "no-reply@yourdomain.com",
+        "to": user.email,
+        "subject": "メール認証してください",
+        "html": f"""
+            <p>登録ありがとうございます</p>
+            <p>以下をクリックしてください</p>
+            <a href="{verify_url}">メール認証する</a>
+        """
+    })
+
+
 # ================
 # ルーティング
 # ================
@@ -105,6 +140,7 @@ def index():
     return render_template("index.html")
 
 @app.route('/process_receipt', methods=['POST'])
+@login_required
 def process_receipt():
     if 'image' not in request.files:
         return jsonify({"error": "No image provided"}), 400
@@ -125,8 +161,9 @@ def process_receipt():
     
     # クラウド
     upload_result = cloudinary.uploader.upload(image)
-    image_url = upload_result["secure_url"]
 
+    image_url = upload_result["secure_url"] #表示用URL
+    public_id = upload_result["public_id"] #削除キー
 
     # OCR処理
     try:
@@ -153,12 +190,14 @@ def process_receipt():
 
     # 新規作成(OCRボタンを押すとここで初めてDB保存)
     expense = Transaction(
+        user_id=current_user.id,
         amount=result.get("total_amount"),
         category="",
         shop_name=result.get("store_name"),
         raw_text=text,
         receipt_date=receipt_date,
         image_path=image_url, #0522変更
+        image_public_id=public_id, #0522変更
         status="draft",
         type="expense",  # ★レシートは固定
         source="ocr",  # ★追加
@@ -170,7 +209,122 @@ def process_receipt():
 
     return jsonify({"redirect": f"/edit/{expense.id}"})
 
+# ================
+# 登録
+# ================
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        email = email.lower().strip()
+
+        existing = User.query.filter_by(email=email).first()
+        if existing:
+            if existing.is_verified:
+                flash("このメールは既に登録されています")
+                return redirect(url_for("register"))
+
+            # 未認証ユーザーは再送扱いにする
+            send_verification_email(existing)
+            flash("確認メールを再送しました")
+            return redirect(url_for("login"))
+
+        token = str(uuid.uuid4())
+
+        user = User(
+            email=email,
+            password_hash=generate_password_hash(password),
+            verification_token=token,
+            token_expiry=datetime.now(timezone.utc) + timedelta(hours=24),
+            is_verified=False
+        )
+
+        db.session.add(user)
+        db.session.commit()
+
+        send_verification_email(user)
+
+        flash("確認メールを送信しました")
+        return redirect(url_for("login"))
+
+    return render_template("register.html")
+
+# ================
+# 認証
+# ================
+@app.route("/verify-email/<token>")
+def verify_email(token):
+    user = User.query.filter_by(verification_token=token).first()
+
+    if not user:
+        return render_template("verify_error.html", message="無効なトークンです")
+
+    if user.token_expiry and user.token_expiry < datetime.now(timezone.utc):
+        return render_template("verify_error.html", message="有効期限が切れています")
+
+    user.is_verified = True
+    user.verification_token = None
+    user.token_expiry = None
+
+    db.session.commit()
+
+    return render_template("verify_success.html")
+
+# ================
+# 未認証ブロック
+# ================
+@app.before_request
+def check_verification():
+    if current_user.is_authenticated:
+
+        # ログイン系は除外
+        allowed_routes = ["login", "register", "verify_email", "static"]
+
+        if request.endpoint not in allowed_routes:
+            if not current_user.is_verified:
+                logout_user()
+                return redirect(url_for("login"))
+
+# ================
+# ログイン
+# ================
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.password_hash, password):
+            if not user.is_verified:
+                flash("メール認証が完了していません")
+                return redirect(url_for("login"))
+            
+            login_user(user)
+            return redirect(url_for("index"))
+
+        flash("メールまたはパスワードが違います")
+        return redirect(url_for("login"))
+
+    return render_template("login.html")
+
+# ================
+# ログアウト
+# ================
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("login"))    
+
+# ================
+# 手入力
+# ================
 @app.route("/create_expense", methods=["POST"])
+@login_required
 def create_expense():
     data = request.json
 
@@ -182,12 +336,14 @@ def create_expense():
             receipt_date = None
 
     expense = Transaction(
+        user_id=current_user.id,
         amount=data.get("amount"),
         category=data.get("category"),
         shop_name=data.get("store_name"),
         raw_text=data.get("ocr_text", ""),  # 手入力なら空でOK
         receipt_date=receipt_date,
         image_path=data.get("image_path"),  # 手入力はNoneでOK
+        image_public_id=None, #0522変更
         status="confirmed",
         type=data.get("type", "expense"),
         source="manual",  # ★追加
@@ -203,8 +359,11 @@ def create_expense():
     })
 
 
-# 編集保存
+# ================
+# OCR後編集
+# ================
 @app.route("/update_expense", methods=["POST"])
+@login_required
 def update_expense():
     data = request.json
 
@@ -212,7 +371,10 @@ def update_expense():
     if not expense_id:
         return jsonify({"error": "missing id"}), 400
             # ★更新
-    expense = Transaction.query.get_or_404(expense_id)
+    expense = Transaction.query.filter_by(
+        id=expense_id,
+        user_id=current_user.id
+    ).first_or_404()
     
     receipt_date = None
     if data.get("date"):
@@ -236,8 +398,10 @@ def update_expense():
 
 # TODO: 認証機能実装後、ユーザーごとの履歴表示にする
 @app.route("/expenses", methods=["GET"])
+@login_required
 def get_expenses():
-    expenses = Transaction.query.order_by(Transaction.created_at.desc()).all()
+    expenses = Transaction.query.filter_by(user_id=current_user.id)\
+        .order_by(Transaction.created_at.desc()).all()
 
     result = []
     for e in expenses:
@@ -253,10 +417,16 @@ def get_expenses():
     return jsonify(result)
 
 # TODO: 認証機能実装後、ユーザーごとの履歴表示にする
-
 @app.route("/history")
+@login_required
 def history():
-    expenses = Transaction.query.filter_by(status="confirmed").order_by(desc(Transaction.receipt_date),desc(Transaction.created_at)).all()
+    expenses = Transaction.query.filter_by(
+        status="confirmed",
+        user_id=current_user.id
+        ).order_by(
+            desc(Transaction.receipt_date),
+            desc(Transaction.created_at)
+        ).all()
     grouped = defaultdict(list)
 
     for e in expenses:
@@ -281,8 +451,12 @@ def debug():
 
 # 履歴から編集画面へ
 @app.route("/edit/<int:id>")
+@login_required
 def edit_expense(id):
-    expense = Transaction.query.get_or_404(id)
+    expense = Transaction.query.filter_by(
+        id=id,
+        user_id=current_user.id
+    ).first_or_404()
 
     # 共通データ
     data = {
@@ -323,13 +497,17 @@ def edit_expense(id):
     else:
         return render_template("manual_edit.html", data=data)
 @app.route("/delete_expense/<int:id>", methods=["DELETE"])
+@login_required
 def delete_expense(id):
-    expense = Transaction.query.get_or_404(id)
+    expense = Transaction.query.filter_by(
+        id=id,
+        user_id=current_user.id
+    ).first_or_404()
 
     # 画像も削除したい場合
-    if expense.image_path:
+    if expense.image_public_id:
         try:
-            os.remove(os.path.join("static", expense.image_path))
+            cloudinary.uploader.destroy(expense.image_public_id)
         except:
             pass
 
@@ -341,92 +519,17 @@ def delete_expense(id):
 # ================
 # 分析ページ
 # ================
-# from datetime import date
-# from sqlalchemy import desc
-# from collections import defaultdict
-
-# @app.route("/analysis")
-# def analysis():
-#     # =========================
-#     # 全データ取得
-#     # =========================
-#     expenses = Transaction.query.filter_by(status="confirmed") \
-#         .order_by(desc(Transaction.receipt_date), desc(Transaction.created_at)).all()
-
-#     # =========================
-#     # 今月だけフィルタ
-#     # =========================
-#     today = date.today()
-#     monthly_expenses = []
-
-#     for e in expenses:
-#         d = e.receipt_date or e.created_at.date()
-
-#         if d.year == today.year and d.month == today.month:
-#             monthly_expenses.append(e)
-
-#     # =========================
-#     # 月ごとグループ（表示用）
-#     # =========================
-#     grouped = defaultdict(list)
-
-#     for e in monthly_expenses:
-#         d = e.receipt_date or e.created_at
-#         key = d.strftime("%Y-%m")
-#         grouped[key].append(e)
-
-#     # =========================
-#     # カテゴリ別（支出のみ）
-#     # =========================
-#     category_data = {}
-
-#     for e in monthly_expenses:
-#         if e.type == "expense":
-#             cat = e.category or "未分類"
-#             category_data[cat] = category_data.get(cat, 0) + e.amount
-
-#     # =========================
-#     # 月間収支合計
-#     # =========================
-#     monthly_summary = {
-#         "expense": 0,
-#         "income": 0
-#     }
-
-#     for e in monthly_expenses:
-#         if e.type == "expense":
-#             monthly_summary["expense"] += e.amount
-#         else:
-#             monthly_summary["income"] += e.amount
-
-#     # =========================
-#     # 日別支出（今月のみ）
-#     # =========================
-#     daily_data = {}
-
-#     for e in monthly_expenses:
-#         d = e.receipt_date or e.created_at
-#         key = d.strftime("%Y-%m-%d")
-
-#         if key not in daily_data:
-#             daily_data[key] = 0
-
-#         if e.type == "expense":
-#             daily_data[key] += e.amount
-
-#     return render_template(
-#         "analysis.html",
-#         grouped_expenses=grouped,
-#         daily_data=daily_data,
-#         category_data=category_data,
-#         monthly_summary=monthly_summary
-#     )
-
 @app.route("/analysis")
+@login_required
 def analysis():
 
-    expenses = Transaction.query.filter_by(status="confirmed") \
-        .order_by(desc(Transaction.receipt_date), desc(Transaction.created_at)).all()
+    expenses = Transaction.query.filter_by(
+        status="confirmed",
+        user_id=current_user.id
+    ).order_by(
+        desc(Transaction.receipt_date), 
+        desc(Transaction.created_at)
+    ).all()
 
     # =========================
     # 月選択
@@ -512,9 +615,9 @@ def analysis():
 # ================
 if __name__ == "__main__":
     with app.app_context():
-        print("DB作成開始")
-        db.create_all()
-        print("DB作成完了")
+        # print("DB作成開始")
+        # db.create_all()
+        # print("DB作成完了")
         if not scheduler.running:
             scheduler.start() 
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
