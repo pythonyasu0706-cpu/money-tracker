@@ -124,18 +124,19 @@
 </div>
 <div class="hidden md:flex gap-6 items-center">
 <a href="{{ url_for('upload') }}">
-<span class="text-secondary dark:text-secondary-fixed-dim font-bold font-label-caps text-label-caps cursor-pointer">UPLOAD</span></a>
+<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">UPLOAD</span></a>
 <a href="{{ url_for('history') }}">
 <span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">HISTORY</span></a>
 <a href="{{ url_for('analysis') }}">
 <span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ANALYSIS</span></a>
+<a href="{{ url_for('account') }}">
+<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ACCOUNT</span></a>
 </div>
 </header>
 
-
-
-
-
+<main>
+{% block content %}{% endblock %}
+</main>
 
 
 <!-- BottomNavBar -->
@@ -156,7 +157,7 @@ href="{{ url_for('analysis') }}">
 <span class="font-label-caps text-label-caps">分析</span>
 </a>
 </nav>
-<script src="/static/js/upload.js"></script>
-<script src="/static/js/input.js"></script>
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

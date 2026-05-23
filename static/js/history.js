@@ -1,5 +1,6 @@
 // /static/history.js 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log(cards[0].dataset);
     const buttons = document.querySelectorAll(".filter-btn");
     const cards = document.querySelectorAll(".expense-card");
     const searchInput = document.getElementById("searchInput");
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cards.forEach(card => {
             const link = card.closest("a");
             const shopName = card.querySelector("h3")?.innerText.toLowerCase() || "";
-            const category = (card.dataset.category || "").trim().toLowerCase();
+            const category = (card.dataset.category || "").trim();
 
             const matchKeyword = 
                 shopName.includes(keyword) || category.includes(keyword);
