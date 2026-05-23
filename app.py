@@ -24,6 +24,7 @@ import os
 
 load_dotenv()
 
+print(os.getenv("DATABASE_URL"))
 # ================
 # インスタンス生成
 # ================
@@ -408,7 +409,15 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("login"))    
+    return render_template("landing.html")   
+
+# ================
+# アカウントページ
+# ================
+@app.route("/account")
+@login_required
+def account():
+    return render_template("account.html")    
 
 # ================
 # アカウント削除

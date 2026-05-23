@@ -1,128 +1,9 @@
 <!-- templates/landing.html -->
-<!DOCTYPE html>
-<html class="light" lang="ja">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-error": "#ffffff",
-                        "secondary-container": "#66affe",
-                        "on-tertiary": "#ffffff",
-                        "background": "#f7fafc",
-                        "on-tertiary-fixed-variant": "#00522f",
-                        "tertiary": "#002713",
-                        "tertiary-container": "#003f23",
-                        "inverse-surface": "#2d3133",
-                        "inverse-on-surface": "#eef1f3",
-                        "on-primary": "#ffffff",
-                        "on-tertiary-fixed": "#002110",
-                        "on-surface-variant": "#43474e",
-                        "outline-variant": "#c4c6cf",
-                        "surface-variant": "#e0e3e5",
-                        "error": "#ba1a1a",
-                        "surface-container-high": "#e5e9eb",
-                        "on-primary-fixed-variant": "#2d476f",
-                        "tertiary-fixed-dim": "#74db9d",
-                        "surface-container-low": "#f1f4f6",
-                        "surface-container-lowest": "#ffffff",
-                        "on-background": "#181c1e",
-                        "surface-tint": "#455f88",
-                        "error-container": "#ffdad6",
-                        "surface": "#f7fafc",
-                        "on-secondary-fixed-variant": "#00497e",
-                        "on-primary-container": "#86a0cd",
-                        "on-surface": "#181c1e",
-                        "outline": "#74777f",
-                        "on-primary-fixed": "#001b3c",
-                        "secondary": "#0061a5",
-                        "secondary-fixed": "#d2e4ff",
-                        "surface-container": "#ebeef0",
-                        "surface-bright": "#f7fafc",
-                        "on-error-container": "#93000a",
-                        "primary-fixed-dim": "#adc7f7",
-                        "primary": "#002045",
-                        "primary-container": "#1a365d",
-                        "primary-fixed": "#d6e3ff",
-                        "on-secondary-fixed": "#001d37",
-                        "on-secondary-container": "#004172",
-                        "surface-container-highest": "#e0e3e5",
-                        "secondary-fixed-dim": "#9fcaff",
-                        "tertiary-fixed": "#91f8b8",
-                        "surface-dim": "#d7dadc",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-container": "#4bb278",
-                        "inverse-primary": "#adc7f7"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "margin-mobile": "16px",
-                        "unit": "8px",
-                        "container-max": "1200px",
-                        "gutter": "24px",
-                        "stack-sm": "8px",
-                        "stack-lg": "32px",
-                        "stack-md": "16px",
-                        "margin-desktop": "40px"
-                    },
-                    "fontFamily": {
-                        "h3": ["Noto Sans JP"],
-                        "body-md": ["Noto Sans JP"],
-                        "h2": ["Noto Sans JP"],
-                        "body-sm": ["Noto Sans JP"],
-                        "label-caps": ["Inter"],
-                        "data-entry": ["Inter"],
-                        "body-lg": ["Noto Sans JP"],
-                        "h1": ["Noto Sans JP"]
-                    },
-                    "fontSize": {
-                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}],
-                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "data-entry": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "h1": ["30px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
-        .ocr-highlight { position: absolute; background: rgba(0, 97, 165, 0.15); border: 1px solid rgba(0, 97, 165, 0.4); pointer-events: none; }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background text-on-surface font-body-md min-h-screen">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
-<div class="flex items-center gap-4">
-<h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">OCR Expense</h1>
-</div>
-</header>
-
-<main class="pt-24 pb-32 px-margin-mobile max-w-container-max mx-auto">
+{% extends "base.html" %}
+{% block header_right %}
+{% endblock %}
+{% block main_class %}pt-24 pb-32 px-margin-mobile max-w-container-max mx-auto{% endblock %}
+{% block content %}
 <!-- Page Title -->
 <div class="mb-stack-lg text-left md:text-left">
 <h2 class="font-h2 text-h2 text-primary">このアプリについて</h2>
@@ -212,7 +93,6 @@
 <span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
 <span class="font-body-sm text-tertiary-fixed-dim font-bold">テキスト抽出完了</span>
 </div>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Conf: 94%</span>
 </div>
 <div class="flex-grow overflow-y-auto p-stack-md custom-scroll md:h-full">
 <pre class="font-data-entry text-on-surface-variant text-sm leading-relaxed whitespace-pre-wrap">領収書
@@ -273,10 +153,6 @@
 </div>
 <div class="flex justify-between items-end">
 <p class="font-h2 text-h2 text-secondary">¥1,250</p>
-<div class="flex items-center gap-1 text-on-tertiary-container">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="font-label-caps text-label-caps">確定済</span>
-</div>
 </div>
 </div>
 <!-- Entry Card 2 -->
@@ -290,10 +166,6 @@
 </div>
 <div class="flex justify-between items-end">
 <p class="font-h2 text-h2 text-secondary">¥3,480</p>
-<div class="flex items-center gap-1 text-on-tertiary-container">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="font-label-caps text-label-caps">確定済</span>
-</div>
 </div>
 </div>
 <!-- Entry Card 3 -->
@@ -307,10 +179,6 @@
 </div>
 <div class="flex justify-between items-end">
 <p class="font-h2 text-h2 text-secondary">¥842</p>
-<div class="flex items-center gap-1 text-on-tertiary-container">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="font-label-caps text-label-caps">確定済</span>
-</div>
 </div>
 </div>
 </div>
@@ -333,56 +201,47 @@
 </div>
 <div class="flex justify-between items-end">
 <p class="font-h2 text-h2 text-secondary">¥12,800</p>
-<div class="flex items-center gap-1 text-on-tertiary-container">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="font-label-caps text-label-caps">確定済</span>
-</div>
 </div>
 </div>
 <!-- Entry Card 5 - Confidence Warning Case -->
-<div class="bg-error-container/20 border border-error/20 rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
 <div class="flex justify-between items-start mb-2">
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
 <h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
 </div>
-<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
 </div>
 <div class="flex justify-between items-end">
-<p class="font-h2 text-h2 text-error">¥4,200</p>
-<div class="flex items-center gap-1 text-error">
-<span class="material-symbols-outlined text-sm">warning</span>
-<span class="font-label-caps text-label-caps">要確認</span>
-</div>
+<p class="font-h2 text-h2 text-secondary">¥4,200</p>
 </div>
 </div>
 </div>
 </section>
-</main>
+{% endblock %}
 <!-- Bottom Actions Wrapper (Fixed to contrast with potential BottomNavBar but here standalone) -->
-<footer class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-surface-variant px-margin-mobile py-stack-md z-50">
+{% block bottom_nav %}
+<nav class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-surface-variant px-margin-mobile py-stack-md z-50">
 <div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
 
-  <!-- 主ボタン：ログイン -->
-<div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+    <!-- 主ボタン：ログイン -->
+  <div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
 
-  <!-- ログイン -->
-  <a href="{{ url_for('login') }}"
-     class="w-full md:w-auto min-w-[240px] bg-secondary text-white py-4 px-8 rounded-lg font-h3 flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:scale-90">
-    <span class="material-symbols-outlined">login</span>
-    ログイン
-  </a>
+    <!-- ログイン -->
+    <a href="{{ url_for('login') }}"
+      class="w-full md:w-auto min-w-[240px] bg-secondary text-white py-4 px-8 rounded-lg font-h3 flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:scale-90">
+      <span class="material-symbols-outlined">login</span>
+      ログイン
+    </a>
 
-  <!-- 新規登録 -->
-  <a href="{{ url_for('register') }}"
-     class="w-full md:w-auto min-w-[240px] text-secondary font-h3 py-4 px-8 border border-secondary rounded-lg hover:bg-surface-container-low transition-all scale-95 active:scale-90 flex items-center justify-center gap-2">
-    <span class="material-symbols-outlined">person_add</span>
-    新規登録
-  </a>
+    <!-- 新規登録 -->
+    <a href="{{ url_for('register') }}"
+      class="w-full md:w-auto min-w-[240px] text-secondary font-h3 py-4 px-8 border border-secondary rounded-lg hover:bg-surface-container-low transition-all scale-95 active:scale-90 flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">person_add</span>
+      新規登録
+    </a>
 
+  </div>
 </div>
-</div>
-</div>
-</main>
-</body>
-</html>
+</nav>
+{% endblock %}

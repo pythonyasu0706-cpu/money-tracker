@@ -1,7 +1,11 @@
 <!-- templates/history.html -->
 {% extends "base.html" %}
+{% set title = "入力履歴" %}
+{% block main_class %}max-w-[1200px] mx-auto pt-24 pb-32 px-margin-mobile md:px-margin-desktop{% endblock %}
 {% block content %}
-<main class="max-w-[1200px] mx-auto pt-24 px-margin-mobile md:px-margin-desktop">
+    <!-- <div class="flex items-center pb-4">
+        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">入力履歴</h1>
+    </div> -->
     <!-- Search and Filter Section -->
     <section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md">
         <div class="relative flex-grow">
@@ -78,11 +82,7 @@
             {% endfor %}
         </div>
     </section>
-
     {% endfor %}
-
-</main>
-
 {% endblock %}
 {% block scripts %}
 <script src="/static/js/history.js"></script>
