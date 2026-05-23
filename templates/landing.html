@@ -1,0 +1,388 @@
+<!-- templates/landing.html -->
+<!DOCTYPE html>
+<html class="light" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "secondary-container": "#66affe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f7fafc",
+                        "on-tertiary-fixed-variant": "#00522f",
+                        "tertiary": "#002713",
+                        "tertiary-container": "#003f23",
+                        "inverse-surface": "#2d3133",
+                        "inverse-on-surface": "#eef1f3",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#002110",
+                        "on-surface-variant": "#43474e",
+                        "outline-variant": "#c4c6cf",
+                        "surface-variant": "#e0e3e5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e5e9eb",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "tertiary-fixed-dim": "#74db9d",
+                        "surface-container-low": "#f1f4f6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#181c1e",
+                        "surface-tint": "#455f88",
+                        "error-container": "#ffdad6",
+                        "surface": "#f7fafc",
+                        "on-secondary-fixed-variant": "#00497e",
+                        "on-primary-container": "#86a0cd",
+                        "on-surface": "#181c1e",
+                        "outline": "#74777f",
+                        "on-primary-fixed": "#001b3c",
+                        "secondary": "#0061a5",
+                        "secondary-fixed": "#d2e4ff",
+                        "surface-container": "#ebeef0",
+                        "surface-bright": "#f7fafc",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#adc7f7",
+                        "primary": "#002045",
+                        "primary-container": "#1a365d",
+                        "primary-fixed": "#d6e3ff",
+                        "on-secondary-fixed": "#001d37",
+                        "on-secondary-container": "#004172",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#9fcaff",
+                        "tertiary-fixed": "#91f8b8",
+                        "surface-dim": "#d7dadc",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#4bb278",
+                        "inverse-primary": "#adc7f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Noto Sans JP"],
+                        "body-md": ["Noto Sans JP"],
+                        "h2": ["Noto Sans JP"],
+                        "body-sm": ["Noto Sans JP"],
+                        "label-caps": ["Inter"],
+                        "data-entry": ["Inter"],
+                        "body-lg": ["Noto Sans JP"],
+                        "h1": ["Noto Sans JP"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-entry": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["30px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
+        .ocr-highlight { position: absolute; background: rgba(0, 97, 165, 0.15); border: 1px solid rgba(0, 97, 165, 0.4); pointer-events: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
+<div class="flex items-center gap-4">
+<h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">OCR Expense</h1>
+</div>
+</header>
+
+<main class="pt-24 pb-32 px-margin-mobile max-w-container-max mx-auto">
+<!-- Page Title -->
+<div class="mb-stack-lg text-left md:text-left">
+<h2 class="font-h2 text-h2 text-primary">このアプリについて</h2>
+    <p class="text-on-surface-variant">
+      レシートをアップロードするだけで、自動で経費データを作成・管理できます。
+    </p>
+</div>
+  <!-- What is -->
+  <section class="bg-surface-container p-6 rounded-xl space-y-2">
+    <h3 class="text-xl font-semibold text-primary">できること</h3>
+    <ul class="list-disc pl-5 text-on-surface-variant space-y-1">
+      <li>レシート画像をOCRで自動読み取り</li>
+      <li>店名・日付・金額を自動抽出</li>
+      <li>勘定科目をAI提案</li>
+      <li>手動編集で正確に修正可能</li>
+      <li>履歴・分析で支出を可視化</li>
+    </ul>
+  </section>
+
+  <!-- Flow -->
+  <section class="space-y-4 mt-4">
+<div class="mb-stack-md text-left md:text-left mt-5">
+<h2 class="font-h2 text-h2 text-primary">使い方</h2>
+</div>
+    <div class="grid gap-4">
+
+      <div class="p-4 border rounded-lg bg-surface">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-secondary">upload</span>
+          <h4 class="font-semibold">1. アップロード</h4>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          レシート画像を選択してアップロードします。
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg bg-surface">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-secondary">search</span>
+          <h4 class="font-semibold">2. OCR解析</h4>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          画像から文字を自動抽出し、経費データを生成します。
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg bg-surface">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-secondary">edit</span>
+          <h4 class="font-semibold">3. 確認・修正</h4>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          必要に応じて店名・金額・カテゴリを修正できます。
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg bg-surface">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-secondary">analytics</span>
+          <h4 class="font-semibold">4. 分析</h4>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          履歴データから支出傾向をグラフで確認できます。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer note -->
+<div class="mb-stack-md text-left md:text-left mt-5">
+<h2 class="font-h2 text-h2 text-primary">サンプル</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Receipt Preview -->
+<section class="lg:col-span-5 flex flex-col gap-stack-md h-full">
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-80 uppercase">Receipt Preview</div>
+<div class="relative w-full aspect-[3/4] bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(26,54,93,0.05)]">
+<img alt="Receipt" class="w-full h-full object-cover" data-alt="A high-quality top-down photograph of a grocery receipt lying flat on a clean white desk. The receipt features clear black printed text with various itemized costs and a total at the bottom. The lighting is bright and even, typical of a modern office environment, maintaining a minimal Japanese SaaS aesthetic with a focus on functional clarity and professional financial documentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3GRvr5oSVUr7gPB4MMty-ujqspN8LHyGbae7JGFGAmp3Wt9X3E4wJI7t30dTnWX0Ti1M_xY8E0V2V352C47BgTQqFtzM3Fxm5FHxeB8hvuyY4S_JybBF9Cav-VdIXwJAwKpUcVhgR5Hh-Ik21BwGPUjSw3U_KHNDqzGf7JFaocgb6ARzSg4eUkCqkc2kxSNJgOk8NfEijPnteYmQRpwMZxvZV6FZl-ZAj0beQo1ixLV48yCI1kK-GROd_u3XjLkV3VtYeRVT-zOQ"/>
+</section>
+<!-- Right: Extracted Text -->
+<section class="lg:col-span-7 flex flex-col gap-stack-md mt-8">
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-80 uppercase">Extracted Text</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0px_4px_12px_rgba(26,54,93,0.05)] h-full flex flex-col">
+<div class="p-stack-md border-b border-surface-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-sm text-tertiary-fixed-dim font-bold">テキスト抽出完了</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Conf: 94%</span>
+</div>
+<div class="flex-grow overflow-y-auto p-stack-md custom-scroll md:h-full">
+<pre class="font-data-entry text-on-surface-variant text-sm leading-relaxed whitespace-pre-wrap">領収書
+株式会社サンプルフード
+2023年10月15日 (日) 12:45
+
+[商品名]              [金額]
+ランチセット A         ¥1,200
+アイスコーヒー         ¥450
+--------------------------
+小計                  ¥1,650
+消費税 (10%)          ¥165
+--------------------------
+合計                  ¥1,815
+
+現    金              ¥2,000
+お釣り                ¥185
+
+レジ: 001
+担当: 佐藤
+                        </pre>
+</div>
+</div>
+</section>
+</div>
+
+
+<section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md mt-12">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-data-entry focus:border-secondary focus:ring-1 focus:ring-secondary transition-all outline-none" placeholder="店舗名やカテゴリで検索" type="text"/>
+</div>
+<div class="flex gap-stack-sm overflow-x-auto pb-2 scrollbar-hide">
+<button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label-caps whitespace-nowrap">すべて</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">飲食</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">交通費</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">消耗品</button>
+<button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">その他</button>
+</div>
+</section>
+<!-- History Content -->
+<div class="space-y-stack-lg">
+<!-- Month Group: December -->
+<section>
+<h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+                    2023年12月
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Entry Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.18</p>
+<h3 class="font-h3 text-body-lg text-primary">スターバックスコーヒー 渋谷店</h3>
+</div>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">飲食</span>
+</div>
+<div class="flex justify-between items-end">
+<p class="font-h2 text-h2 text-secondary">¥1,250</p>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-label-caps">確定済</span>
+</div>
+</div>
+</div>
+<!-- Entry Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.15</p>
+<h3 class="font-h3 text-body-lg text-primary">タクシー利用（日本交通）</h3>
+</div>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">交通費</span>
+</div>
+<div class="flex justify-between items-end">
+<p class="font-h2 text-h2 text-secondary">¥3,480</p>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-label-caps">確定済</span>
+</div>
+</div>
+</div>
+<!-- Entry Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.10</p>
+<h3 class="font-h3 text-body-lg text-primary">セブンイレブン 代々木店</h3>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
+</div>
+<div class="flex justify-between items-end">
+<p class="font-h2 text-h2 text-secondary">¥842</p>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-label-caps">確定済</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Month Group: November -->
+<section>
+<h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+                    2023年11月
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Entry Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.28</p>
+<h3 class="font-h3 text-body-lg text-primary">Amazon.co.jp</h3>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
+</div>
+<div class="flex justify-between items-end">
+<p class="font-h2 text-h2 text-secondary">¥12,800</p>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-label-caps">確定済</span>
+</div>
+</div>
+</div>
+<!-- Entry Card 5 - Confidence Warning Case -->
+<div class="bg-error-container/20 border border-error/20 rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
+<h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
+</div>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
+</div>
+<div class="flex justify-between items-end">
+<p class="font-h2 text-h2 text-error">¥4,200</p>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-label-caps text-label-caps">要確認</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Actions Wrapper (Fixed to contrast with potential BottomNavBar but here standalone) -->
+<footer class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-surface-variant px-margin-mobile py-stack-md z-50">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+
+  <!-- 主ボタン：ログイン -->
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+
+  <!-- ログイン -->
+  <a href="{{ url_for('login') }}"
+     class="w-full md:w-auto min-w-[240px] bg-secondary text-white py-4 px-8 rounded-lg font-h3 flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:scale-90">
+    <span class="material-symbols-outlined">login</span>
+    ログイン
+  </a>
+
+  <!-- 新規登録 -->
+  <a href="{{ url_for('register') }}"
+     class="w-full md:w-auto min-w-[240px] text-secondary font-h3 py-4 px-8 border border-secondary rounded-lg hover:bg-surface-container-low transition-all scale-95 active:scale-90 flex items-center justify-center gap-2">
+    <span class="material-symbols-outlined">person_add</span>
+    新規登録
+  </a>
+
+</div>
+</div>
+</div>
+</main>
+</body>
+</html>

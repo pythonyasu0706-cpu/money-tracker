@@ -86,9 +86,16 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255))
     is_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    verification_token = db.Column(db.String(255), index=True, unique=True)
-    token_expiry = db.Column(db.DateTime)
+    # verification_token = db.Column(db.String(255), index=True, unique=True)
+    # token_expiry = db.Column(db.DateTime)
 
+class EmailVerificationToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    token = db.Column(db.String(255), unique=True, index=True)
+    expires_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    used = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=db.func.now())
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -115,14 +122,14 @@ scheduler.add_job(func=cleanup_drafts, trigger="interval", hours=1)
 scheduler.start()
 
 # メール送信関数
-def send_verification_email(user):
-    token = user.verification_token
+def send_verification_email(email, token):
 
-    verify_url = f"https://your-domain.com/verify-email/{token}"
+    BASE_URL = os.getenv("BASE_URL", "http://localhost:5000")
+    verify_url = f"{BASE_URL}/verify-email/{token}"
 
     resend.Emails.send({
-        "from": "no-reply@yourdomain.com",
-        "to": user.email,
+        "from": "no-reply@yasumasu.com",
+        "to": email,
         "subject": "メール認証してください",
         "html": f"""
             <p>登録ありがとうございます</p>
@@ -131,13 +138,20 @@ def send_verification_email(user):
         """
     })
 
-
 # ================
 # ルーティング
 # ================
-@app.route('/')
-def index():
-    return render_template("index.html")
+
+@app.route("/")
+def landing():
+    if current_user.is_authenticated:
+        return redirect(url_for("upload"))
+    return render_template("landing.html")
+
+@app.route("/upload")
+@login_required
+def upload():
+    return render_template("upload.html")
 
 @app.route('/process_receipt', methods=['POST'])
 @login_required
@@ -214,79 +228,139 @@ def process_receipt():
 # ================
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
 
-        email = email.lower().strip()
+    # ======================
+    # GET（画面表示）
+    # ======================
+    if request.method == "GET":
+        return render_template("register.html")
 
-        existing = User.query.filter_by(email=email).first()
-        if existing:
-            if existing.is_verified:
-                flash("このメールは既に登録されています")
-                return redirect(url_for("register"))
+    # ======================
+    # POST（登録処理）
+    # ======================
+    email = request.form.get("email", "").lower().strip()
+    password = request.form.get("password", "")
 
-            # 未認証ユーザーは再送扱いにする
-            send_verification_email(existing)
-            flash("確認メールを再送しました")
-            return redirect(url_for("login"))
+    if not email or not password:
+        flash("入力してください")
+        return redirect(url_for("register"))
 
-        token = str(uuid.uuid4())
+    user = User.query.filter_by(email=email).first()
 
+    # ======================
+    # 既存ユーザー
+    # ======================
+    if user:
+        if user.is_verified:
+            flash("このメールは既に登録されています")
+            return redirect(url_for("register"))
+    else:
         user = User(
             email=email,
             password_hash=generate_password_hash(password),
-            verification_token=token,
-            token_expiry=datetime.now(timezone.utc) + timedelta(hours=24),
             is_verified=False
         )
-
         db.session.add(user)
         db.session.commit()
 
-        send_verification_email(user)
+    # ======================
+    # トークン発行（毎回新規）
+    # ======================
+    EmailVerificationToken.query.filter_by(
+        user_id=user.id,
+        used=False
+    ).update({"used": True})
 
-        flash("確認メールを送信しました")
-        return redirect(url_for("login"))
+    token = str(uuid.uuid4())
 
-    return render_template("register.html")
+    db.session.add(EmailVerificationToken(
+        user_id=user.id,
+        token=token,
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=24)
+    ))
+
+    db.session.commit()
+
+    send_verification_email(user.email, token)
+
+    flash("確認メールを送信しました")
+    return redirect(url_for("login"))
 
 # ================
 # 認証
 # ================
 @app.route("/verify-email/<token>")
 def verify_email(token):
-    user = User.query.filter_by(verification_token=token).first()
 
-    if not user:
+    record = EmailVerificationToken.query.filter_by(
+        token=token,
+        used=False
+    ).first()
+
+    if not record:
         return render_template("verify_error.html", message="無効なトークンです")
 
-    if user.token_expiry and user.token_expiry < datetime.now(timezone.utc):
-        return render_template("verify_error.html", message="有効期限が切れています")
+    now = datetime.now(timezone.utc)
+
+    expires_at = record.expires_at
+
+    # ★ここが修正ポイント（tz統一）
+    if expires_at is None:
+        return render_template("verify_error.html", message="トークンが不正です")
+
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    if expires_at < now:
+        return render_template("verify_error.html", message="有効期限切れです")
+
+    user = User.query.get(record.user_id)
+
+    if not user:
+        return render_template("verify_error.html", message="ユーザーが存在しません")
+
+    if user.is_verified:
+        return render_template("verify_success.html")
 
     user.is_verified = True
-    user.verification_token = None
-    user.token_expiry = None
+    record.used = True
 
     db.session.commit()
 
     return render_template("verify_success.html")
-
+    
 # ================
 # 未認証ブロック
 # ================
 @app.before_request
 def check_verification():
-    if current_user.is_authenticated:
 
-        # ログイン系は除外
-        allowed_routes = ["login", "register", "verify_email", "static"]
+    if not current_user.is_authenticated:
+        return
 
-        if request.endpoint not in allowed_routes:
-            if not current_user.is_verified:
-                logout_user()
-                return redirect(url_for("login"))
+    # 除外ルート
+    allowed_routes = {
+        "login",
+        "register",
+        "verify_email",
+        "static"
+    }
 
+    endpoint = request.endpoint
+
+    if endpoint is None:
+        return
+
+    # staticは常にOK
+    if request.blueprint == "static":
+        return
+
+    # 未認証ユーザーはブロック
+    if endpoint not in allowed_routes:
+        if not current_user.is_verified:
+            logout_user()
+            return redirect(url_for("login"))
+        
 # ================
 # ログイン
 # ================
@@ -304,7 +378,7 @@ def login():
                 return redirect(url_for("login"))
             
             login_user(user)
-            return redirect(url_for("index"))
+            return redirect(url_for("upload"))
 
         flash("メールまたはパスワードが違います")
         return redirect(url_for("login"))
@@ -319,6 +393,17 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("login"))    
+
+# ================
+# アカウント削除
+# ================
+@app.route("/delete-account", methods=["POST"])
+@login_required
+def delete_account():
+    db.session.delete(current_user)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for("landing"))
 
 # ================
 # 手入力
