@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>分析ページ（サンプル）</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<!-- ===== ナビ（簡易）===== -->
+<header class="fixed top-0 left-0 right-0 bg-white shadow z-10">
+  <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+    <h1 class="font-bold text-lg">MoneyTracker</h1>
+    <span class="text-sm text-gray-500">分析</span>
+  </div>
+</header>
+
+<!-- ===== メイン ===== -->
+<main class="pt-20 pb-24 max-w-6xl mx-auto px-6 space-y-6">
+
+  <!-- 月選択 -->
+  <div class="flex justify-between items-center">
+    <h2 class="text-xl font-semibold">月別分析</h2>
+
+    <select id="monthSelect"
+      class="border rounded-lg px-3 py-2 bg-white shadow-sm">
+      <option value="2026-05" selected>2026年5月</option>
+      <option value="2026-04">2026年4月</option>
+    </select>
+  </div>
+
+  <!-- ===== サマリー ===== -->
+  <section class="grid md:grid-cols-3 gap-4">
+
+    <!-- 支出 -->
+    <div class="bg-white rounded-xl shadow p-4">
+      <p class="text-sm text-gray-500">支出</p>
+      <p class="text-2xl font-bold text-red-500">¥42,000</p>
+    </div>
+
+    <!-- 収入 -->
+    <div class="bg-white rounded-xl shadow p-4">
+      <p class="text-sm text-gray-500">収入</p>
+      <p class="text-2xl font-bold text-blue-500">¥120,000</p>
+    </div>
+
+    <!-- 差額 -->
+    <div class="bg-white rounded-xl shadow p-4">
+      <p class="text-sm text-gray-500">収支</p>
+      <p class="text-2xl font-bold text-green-500">¥78,000</p>
+    </div>
+
+  </section>
+
+  <!-- ===== グラフ ===== -->
+  <section class="grid md:grid-cols-2 gap-6">
+
+    <!-- 収支バー -->
+    <div class="bg-white rounded-xl shadow p-5">
+      <h3 class="font-semibold mb-4">収支バランス</h3>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <!-- 円グラフ -->
+    <div class="bg-white rounded-xl shadow p-5">
+      <h3 class="font-semibold mb-4">カテゴリ別</h3>
+      <canvas id="categoryChart"></canvas>
+    </div>
+
+  </section>
+
+  <!-- 日別 -->
+  <section class="bg-white rounded-xl shadow p-5">
+    <h3 class="font-semibold mb-4">日別推移</h3>
+    <canvas id="dailyChart"></canvas>
+  </section>
+
+</main>
+
+<!-- ===== 下ナビ（ダミー）===== -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t h-16 flex justify-around items-center text-sm">
+  <span class="text-gray-400">履歴</span>
+  <span class="text-blue-500 font-semibold">分析</span>
+  <span class="text-gray-400">アカウント</span>
+</nav>
+
+<!-- ===== 固定データ ===== -->
+<script>
+const MONTHLY_SUMMARY = {
+    expense: 42000,
+    income: 120000
+};
+
+const DAILY_DATA = {
+    "2026-05-01": 1200,
+    "2026-05-03": 800,
+    "2026-05-10": 4500,
+    "2026-05-15": 3000,
+    "2026-05-20": 2200
+};
+
+const CATEGORY_DATA = {
+    "食費": 12000,
+    "交通費": 5000,
+    "消耗品費": 8000,
+    "その他": 17000
+};
+</script>
+
+<script src="/static/js/analysis.js"></script>
+
+</body>
+</html>

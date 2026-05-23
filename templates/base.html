@@ -124,7 +124,6 @@
     <div class="flex items-center">
         <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">{{ title }}</h1>
     </div>
-
 </div>
 {% block header_right %}
 <div class="hidden md:flex gap-6 items-center">
@@ -137,6 +136,13 @@
 <a href="{{ url_for('account') }}">
 <span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ACCOUNT</span></a>
 </div>
+    <!-- ⭐ スマホ用アカウントボタン -->
+    <a href="{{ url_for('account') }}"
+       class="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition">
+        <span class="material-symbols-outlined text-secondary text-2xl">
+            account_circle
+        </span>
+    </a>
 {% endblock %}
 </header>
 
