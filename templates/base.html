@@ -135,8 +135,12 @@
 <span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">HISTORY</span></a>
 <a href="{{ url_for('analysis') }}">
 <span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ANALYSIS</span></a>
-<a href="{{ url_for('account') }}">
-<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ACCOUNT</span></a>
+    <a href="{{ url_for('account') }}"
+       class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition">
+        <span class="material-symbols-outlined text-secondary text-2xl">
+            account_circle
+        </span>
+    </a>
 </div>
     <!-- ⭐ スマホ用アカウントボタン -->
     <a href="{{ url_for('account') }}"

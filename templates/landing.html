@@ -253,18 +253,21 @@
         </div>
     </div>
     <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-stack-md mt-4 mb-28">
+    <div class="flex flex-col sm:flex-row gap-stack-md mt-4 mb-4">
         <button type="button" id="saveBtn" class="flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
         <span class="material-symbols-outlined" data-icon="save" style="font-variation-settings: 'FILL' 1;">save</span>
                     保存する
                 </button>
-        <button id="deleteBtn" class="hidden flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
+        <!-- <button id="deleteBtn" class="flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
         <span class="material-symbols-outlined" data-icon="delete">delete</span>
                     削除
-                </button>
+                </button> -->
     </div>
 
 <!-- 履歴サンプル -->
+<div class="flex items-center pb-4">
+        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">入力履歴</h1>
+</div>
 <section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md">
   <div class="relative flex-grow">
   <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
@@ -366,6 +369,9 @@
 
 <!-- 会計分析サンプル -->
 <div class="space-y-8">
+     <div class="flex items-center pt-4">
+        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">会計分析</h1>
+    </div>
 <!-- 月選択 -->
 <select class="px-3 py-2 border rounded bg-white w-[150px]">
     <option selected>2026-05</option>
