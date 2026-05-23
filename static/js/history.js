@@ -1,6 +1,5 @@
 // /static/history.js 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log(cards[0].dataset);
     const buttons = document.querySelectorAll(".filter-btn");
     const cards = document.querySelectorAll(".expense-card");
     const searchInput = document.getElementById("searchInput");
