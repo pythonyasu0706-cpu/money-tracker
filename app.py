@@ -24,7 +24,6 @@ import os
 
 load_dotenv()
 
-print(os.getenv("DATABASE_URL"))
 # ================
 # インスタンス生成
 # ================
