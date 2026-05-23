@@ -1,118 +1,235 @@
 <!DOCTYPE html>
-<html lang="ja" class="light">
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>分析ページ（サンプル）</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<title>会計分析（サンプル）</title>
 </head>
-<body class="bg-gray-50 text-gray-800">
 
-<!-- ===== ナビ（簡易）===== -->
-<header class="fixed top-0 left-0 right-0 bg-white shadow z-10">
-  <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-    <h1 class="font-bold text-lg">MoneyTracker</h1>
-    <span class="text-sm text-gray-500">分析</span>
-  </div>
-</header>
+<body class="bg-gray-50">
 
-<!-- ===== メイン ===== -->
-<main class="pt-20 pb-24 max-w-6xl mx-auto px-6 space-y-6">
+<main class="max-w-[1200px] mx-auto pt-24 px-4 md:px-8">
 
-  <!-- 月選択 -->
-  <div class="flex justify-between items-center">
-    <h2 class="text-xl font-semibold">月別分析</h2>
+<div class="space-y-8">
 
-    <select id="monthSelect"
-      class="border rounded-lg px-3 py-2 bg-white shadow-sm">
-      <option value="2026-05" selected>2026年5月</option>
-      <option value="2026-04">2026年4月</option>
-    </select>
-  </div>
+<!-- 月選択 -->
+<select class="px-3 py-2 border rounded bg-white w-[150px]">
+    <option selected>2026-05</option>
+    <option>2026-04</option>
+    <option>2026-03</option>
+</select>
 
-  <!-- ===== サマリー ===== -->
-  <section class="grid md:grid-cols-3 gap-4">
+<!-- ===================== -->
+<!-- 月セクション -->
+<!-- ===================== -->
+<section class="month-section">
 
-    <!-- 支出 -->
-    <div class="bg-white rounded-xl shadow p-4">
-      <p class="text-sm text-gray-500">支出</p>
-      <p class="text-2xl font-bold text-red-500">¥42,000</p>
+<!-- ===================== -->
+<!-- PCテーブル -->
+<!-- ===================== -->
+<div class="hidden md:block overflow-x-auto">
+<table class="min-w-[700px] w-full border border-gray-200 rounded-lg">
+    <thead class="bg-gray-100 text-left">
+        <tr>
+            <th class="p-3">日付</th>
+            <th class="p-3">店名</th>
+            <th class="p-3">カテゴリ</th>
+            <th class="p-3 text-right">支出</th>
+            <th class="p-3 text-right">収入</th>
+            <th class="p-3 text-right"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <!-- 行 -->
+        <tr class="border-t hover:bg-gray-50 cursor-pointer">
+            <td class="p-3 text-sm text-gray-500">2026.05.20</td>
+            <td class="p-3 font-medium">セブンイレブン</td>
+            <td class="p-3">
+                <span class="px-2 py-1 rounded text-xs bg-amber-300">
+                    食費
+                </span>
+            </td>
+            <td class="p-3 text-right font-bold text-secondary">¥1200</td>
+            <td class="p-3 text-right font-bold text-green-600"></td>
+            <td class="p-3 text-right">
+                <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                    編集
+                </button>
+            </td>
+        </tr>
+
+        <tr class="border-t hover:bg-gray-50 cursor-pointer">
+            <td class="p-3 text-sm text-gray-500">2026.05.19</td>
+            <td class="p-3 font-medium">JR西日本</td>
+            <td class="p-3">
+                <span class="px-2 py-1 rounded text-xs bg-purple-300">
+                    交通費
+                </span>
+            </td>
+            <td class="p-3 text-right font-bold text-secondary">¥560</td>
+            <td class="p-3 text-right font-bold text-green-600"></td>
+            <td class="p-3 text-right">
+                <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                    編集
+                </button>
+            </td>
+        </tr>
+
+        <tr class="border-t hover:bg-gray-50 cursor-pointer">
+            <td class="p-3 text-sm text-gray-500">2026.05.18</td>
+            <td class="p-3 font-medium">給料</td>
+            <td class="p-3">
+                <span class="px-2 py-1 rounded text-xs bg-red-300">
+                    給与
+                </span>
+            </td>
+            <td class="p-3 text-right font-bold text-red-400"></td>
+            <td class="p-3 text-right font-bold text-green-600">¥250000</td>
+            <td class="p-3 text-right">
+                <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                    編集
+                </button>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+</div>
+
+<!-- ===================== -->
+<!-- スマホカード -->
+<!-- ===================== -->
+<div class="md:hidden space-y-3">
+
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.20</span>
+            <span class="font-bold">¥1200</span>
+        </div>
+        <div class="mt-1 font-medium">セブンイレブン</div>
+        <div class="text-xs text-gray-500">食費</div>
     </div>
 
-    <!-- 収入 -->
-    <div class="bg-white rounded-xl shadow p-4">
-      <p class="text-sm text-gray-500">収入</p>
-      <p class="text-2xl font-bold text-blue-500">¥120,000</p>
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.19</span>
+            <span class="font-bold">¥560</span>
+        </div>
+        <div class="mt-1 font-medium">JR西日本</div>
+        <div class="text-xs text-gray-500">交通費</div>
     </div>
 
-    <!-- 差額 -->
-    <div class="bg-white rounded-xl shadow p-4">
-      <p class="text-sm text-gray-500">収支</p>
-      <p class="text-2xl font-bold text-green-500">¥78,000</p>
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.18</span>
+            <span class="font-bold text-green-600">¥250000</span>
+        </div>
+        <div class="mt-1 font-medium">給料</div>
+        <div class="text-xs text-gray-500">給与</div>
     </div>
 
-  </section>
+</div>
 
-  <!-- ===== グラフ ===== -->
-  <section class="grid md:grid-cols-2 gap-6">
+</section>
 
-    <!-- 収支バー -->
-    <div class="bg-white rounded-xl shadow p-5">
-      <h3 class="font-semibold mb-4">収支バランス</h3>
-      <canvas id="monthlyChart"></canvas>
-    </div>
+<!-- ===================== -->
+<!-- グラフ -->
+<!-- ===================== -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-4">
 
-    <!-- 円グラフ -->
-    <div class="bg-white rounded-xl shadow p-5">
-      <h3 class="font-semibold mb-4">カテゴリ別</h3>
-      <canvas id="categoryChart"></canvas>
-    </div>
+    <section class="col-span-5 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">カテゴリ別支出</h2>
+        <canvas id="categoryChart" class="w-full max-w-full"></canvas>
+    </section>
 
-  </section>
+    <section class="col-span-7 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">今月の収支</h2>
+        <canvas id="monthlyChart" class="w-full max-w-full"></canvas>
+    </section>
 
-  <!-- 日別 -->
-  <section class="bg-white rounded-xl shadow p-5">
-    <h3 class="font-semibold mb-4">日別推移</h3>
-    <canvas id="dailyChart"></canvas>
-  </section>
+</section>
 
+<section class="flex flex-col items-center justify-center mb-10">
+    <h2 class="text-lg font-bold mb-2">日別支出</h2>
+    <canvas id="dailyChart" class="w-full max-w-full"></canvas>
+</section>
+
+</div>
 </main>
 
-<!-- ===== 下ナビ（ダミー）===== -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t h-16 flex justify-around items-center text-sm">
-  <span class="text-gray-400">履歴</span>
-  <span class="text-blue-500 font-semibold">分析</span>
-  <span class="text-gray-400">アカウント</span>
-</nav>
-
-<!-- ===== 固定データ ===== -->
 <script>
-const MONTHLY_SUMMARY = {
-    expense: 42000,
-    income: 120000
-};
-
-const DAILY_DATA = {
-    "2026-05-01": 1200,
-    "2026-05-03": 800,
-    "2026-05-10": 4500,
-    "2026-05-15": 3000,
-    "2026-05-20": 2200
-};
-
 const CATEGORY_DATA = {
     "食費": 12000,
     "交通費": 5000,
-    "消耗品費": 8000,
-    "その他": 17000
+    "消耗品費": 3000
 };
-</script>
 
-<script src="/static/js/analysis.js"></script>
+const MONTHLY_SUMMARY = {
+    expense: 20000,
+    income: 250000
+};
+
+const DAILY_DATA = {
+    "2026-05-18": 2000,
+    "2026-05-19": 560,
+    "2026-05-20": 1200
+};
+
+// 円グラフ
+new Chart(document.getElementById("categoryChart"), {
+    type: 'pie',
+    data: {
+        labels: Object.keys(CATEGORY_DATA),
+        datasets: [{
+            data: Object.values(CATEGORY_DATA)
+        }]
+    }
+});
+
+// 横棒
+new Chart(document.getElementById("monthlyChart"), {
+    type: 'bar',
+    data: {
+        labels: ["支出", "収入"],
+        datasets: [{
+            data: [MONTHLY_SUMMARY.expense, MONTHLY_SUMMARY.income],
+            backgroundColor: ["#fd7c7c", "#3ec8ff"]
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        plugins: {legend: {display: false}, tooltip: {enabled: false}},
+    }
+});
+
+// 日別
+new Chart(document.getElementById("dailyChart"), {
+    type: 'bar',
+    data: {
+        labels: Object.keys(DAILY_DATA),
+        datasets: [{
+            label: "支出",
+            data: Object.values(DAILY_DATA),
+            backgroundColor: "#79ade9"
+        }]
+    },
+    options: {
+        plugins: {legend: {display: false}, tooltip: {enabled: false}},
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
 
 </body>
 </html>

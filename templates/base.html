@@ -120,8 +120,10 @@
 <header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
 <div class="flex items-center gap-4">
 <!-- <span class="material-symbols-outlined text-secondary dark:text-secondary-fixed-dim font-h3 text-h3 cursor-pointer hover:opacity-80 transition-opacity scale-95 active:scale-90">arrow_back</span> -->
+<a href="{% if current_user.is_authenticated %}{{ url_for('upload') }}{% else %}{{ url_for('landing') }}{% endif %}">
 <h1 class="font-h2 text-h2 text-primary dark:text-primary-fixed">OCR Expense</h1>
-    <div class="flex items-center">
+</a>
+<div class="flex items-center">
         <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">{{ title }}</h1>
     </div>
 </div>

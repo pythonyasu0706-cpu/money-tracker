@@ -437,6 +437,7 @@ def delete_account():
 def create_expense():
     data = request.json
 
+    # 日付
     receipt_date = None
     if data.get("date"):
         try:
@@ -444,9 +445,21 @@ def create_expense():
         except:
             receipt_date = None
 
+    # 金額
+    amount_raw = data.get("amount", "")
+
+    if amount_raw == "":
+        return jsonify({"error": "金額を入力してください"}), 400
+
+    try:
+        amount = int(amount_raw)
+    except ValueError:
+        return jsonify({"error": "金額は数字で入力してください"}), 400
+
+    # 保存
     expense = Transaction(
         user_id=current_user.id,
-        amount=data.get("amount"),
+        amount=amount,
         category=data.get("category"),
         shop_name=data.get("store_name"),
         raw_text=data.get("ocr_text", ""),  # 手入力なら空でOK

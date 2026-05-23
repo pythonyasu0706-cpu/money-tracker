@@ -77,6 +77,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // applyFilter();
     // updateEmptyMonths();
 
+     // =====================
+    // カテゴリー円グラフ
+    // =====================
+    if (ctx && typeof CATEGORY_DATA !== "undefined") {
+        const categories = Object.keys(CATEGORY_DATA);
+        const values = Object.values(CATEGORY_DATA);
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: categories,
+                datasets: [{
+                    data: values,
+            backgroundColor: [
+                "#6edbb3", // muted green
+                "#f59e5b", // muted orange
+                "#8aa8ff", // muted blue
+                "#4fd1c5", // muted teal
+                "#f2c66d", // muted amber
+                "#b39df3", // muted purple
+                "#f78aa0"  // muted pink
+            ]
+                }]
+            }
+        });
+    }
 
     // =====================
     // 収支バーチャート
@@ -139,32 +165,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-     // =====================
-    // カテゴリー円グラフ
-    // =====================
-    if (ctx && typeof CATEGORY_DATA !== "undefined") {
-        const categories = Object.keys(CATEGORY_DATA);
-        const values = Object.values(CATEGORY_DATA);
-
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: categories,
-                datasets: [{
-                    data: values,
-            backgroundColor: [
-                "#6edbb3", // muted green
-                "#f59e5b", // muted orange
-                "#8aa8ff", // muted blue
-                "#4fd1c5", // muted teal
-                "#f2c66d", // muted amber
-                "#b39df3", // muted purple
-                "#f78aa0"  // muted pink
-            ]
-                }]
-            }
-        });
-    }
-
 });

@@ -205,10 +205,28 @@ window.addEventListener("DOMContentLoaded", async () => {
     // =====================
     saveBtn.addEventListener("click", async () => {
 
+        const amountInput = document.getElementById("amount").value.trim();
+
+        // ★ここ追加
+        if (!amountInput) {
+            alert("金額を入力してください");
+            return;
+        }
+
+        if (isNaN(amountInput)) {
+            alert("金額は数字で入力してください");
+            return;
+        }
+
+        if (!selectedCategory) {
+            alert("カテゴリを選択してください");
+            return;
+        }
+
         const payload = {
             store_name: document.getElementById("storeName").value,
             date: document.getElementById("date").value,
-            amount: document.getElementById("amount").value,
+            amount: Number(amountInput), // ← ここも重要（数値に変換）
             category: selectedCategory,
             type: selectedType
         };
