@@ -424,13 +424,14 @@ def account():
 @app.route("/delete-account", methods=["POST"])
 @login_required
 def delete_account():
+    db.session.query(EmailVerificationToken).filter_by(user_id=user.id).delete()
     db.session.delete(current_user)
     db.session.commit()
     logout_user()
     return redirect(url_for("landing"))
 
 # ================
-# 手入力
+# 経費登録（手入力）
 # ================
 @app.route("/create_expense", methods=["POST"])
 @login_required
