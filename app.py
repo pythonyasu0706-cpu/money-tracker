@@ -351,10 +351,19 @@ def verify_email(token):
 @app.before_request
 def check_verification():
 
+    # ① 未ログインは何もしない
     if not current_user.is_authenticated:
         return
 
-    # 除外ルート
+    # ② デバッグ表示（ログイン済みのみ）
+    print("USER:", current_user.email)
+    print("VERIFIED:", current_user.is_verified)
+
+    # ③ 静的ファイルは除外
+    if request.blueprint == "static":
+        return
+    
+    # ④ 除外除外ルート
     allowed_routes = {
         "login",
         "register",
@@ -424,8 +433,16 @@ def account():
 @app.route("/delete-account", methods=["POST"])
 @login_required
 def delete_account():
-    db.session.query(EmailVerificationToken).filter_by(user_id=user.id).delete()
-    db.session.delete(current_user)
+    user_id = current_user.id
+    # ① 取引削除
+    Transaction.query.filter_by(user_id=user_id).delete()
+    # トークン削除
+    EmailVerificationToken.query.filter_by(user_id=current_user.id).delete()
+    # ユーザー削除
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+
     db.session.commit()
     logout_user()
     return redirect(url_for("landing"))

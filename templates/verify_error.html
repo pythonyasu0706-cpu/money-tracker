@@ -1,0 +1,49 @@
+<!-- /template/verify_error.html -->
+{% extends "base.html" %}
+
+{% block header_right %}
+{% endblock %}
+
+{% block main_class %}
+pt-24 pb-32 px-margin-mobile max-w-container-max mx-auto
+{% endblock %}
+
+{% block content %}
+<div class="h-full flex items-center justify-center">
+
+  <div class="w-full max-w-md bg-surface-container-lowest rounded-xl
+              shadow-[0px_8px_24px_rgba(26,54,93,0.08)]
+              border border-outline-variant p-8 text-center">
+
+    <h2 class="font-h1 text-h1 text-error mb-3">
+      認証エラー
+    </h2>
+
+    <p class="text-body-md text-on-surface-variant mb-6">
+      認証リンクが無効、または期限切れの可能性があります。<br>
+      もう一度メール認証を行ってください。
+    </p>
+
+    <a href="{{ url_for('register') }}"
+       class="inline-block w-full py-3 rounded-lg
+              bg-error text-white font-bold
+              shadow-[0px_6px_16px_rgba(220,38,38,0.25)]
+              hover:opacity-90 active:scale-[0.98]
+              transition">
+      認証メールを再送する
+    </a>
+
+    <a href="{{ url_for('login') }}"
+       class="inline-block w-full mt-4 py-3 rounded-lg
+              border border-outline-variant
+              text-on-surface font-bold
+              hover:bg-surface-container transition">
+      ログイン画面へ戻る
+    </a>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}
+{% endblock %}
