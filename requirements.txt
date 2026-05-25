@@ -41,3 +41,5 @@ Werkzeug==3.1.8
 flask-login==0.6.3
 flask-migrate==4.1.0
 resend
+flask_login
+flask_migrate
