@@ -9,7 +9,7 @@ def send_verification_email(email, token):
     if not BASE_URL:
         BASE_URL = "http://localhost:5000"
         
-    verify_url = f"{BASE_URL}/verify-email/{token}"
+    verify_url = f"{BASE_URL}/auth/verify-email/{token}"
 
     try:
         result = resend.Emails.send({
