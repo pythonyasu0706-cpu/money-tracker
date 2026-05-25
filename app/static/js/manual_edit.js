@@ -1,6 +1,6 @@
 // /static/js/manual_edit.js
 window.addEventListener("DOMContentLoaded", () => {
-
+    const deleteBtn = document.getElementById("deleteBtn");
     const data = window.INIT_DATA;
     if (!data) return;
 

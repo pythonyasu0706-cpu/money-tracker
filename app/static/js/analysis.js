@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     monthSelect?.addEventListener("change", (e) => {
         const month = e.target.value;
-        window.location.href = `/analysis?month=${month}`;
+        window.location.href = `/analysis/analysis?month=${month}`;
     });
 
     Chart.register(ChartDataLabels);

@@ -271,7 +271,7 @@ def edit_expense(id):
                 "date": data["date"],
                 "total_amount": expense.amount
             },
-            "categories": ai.parse(expense.raw_text).get("categories", [])
+            "categories": current_app.ai.parse(expense.raw_text).get("categories", [])
         })
 
         return render_template("transaction/ocr_edit.html", data=data)

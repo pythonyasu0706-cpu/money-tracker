@@ -53,7 +53,7 @@
         <!-- カード -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md h-full">
             {% for e in items %}
-            <a href="{{ url_for('edit_expense', id=e.id) }}"
+            <a href="{{ url_for('transaction.edit_expense', id=e.id) }}"
                 class="w-full h-full">
                 <div class="expense-card bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow h-full flex flex-col"
                     data-category="{{ e.category or 'その他' }}">

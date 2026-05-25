@@ -35,7 +35,7 @@
                 <tbody>
                 {% for e in items %}
                 <tr class="border-t hover:bg-surface-container transition cursor-pointer"
-                    onclick="location.href='{{ url_for('edit_expense', id=e.id) }}'">
+                    onclick="location.href='{{ url_for('transaction.edit_expense', id=e.id) }}'">
                     
                     <td class="p-3 text-sm text-on-surface-variant">
                     {{ e.receipt_date.strftime("%Y.%m.%d") if e.receipt_date else e.created_at.strftime("%Y.%m.%d") }}
@@ -63,7 +63,7 @@
                     {% endif %}
                     </td>
                     <td class="p-3 text-right">
-                    <a href="{{ url_for('edit_expense', id=e.id) }}"
+                    <a href="{{ url_for('transaction.edit_expense', id=e.id) }}"
                         class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
                         onclick="event.stopPropagation()">
                         編集

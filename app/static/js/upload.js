@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // 成功時は戻さず遷移
-            window.location.href = data.redirect;
+            // 成功時は戻さず遷移 BP字変更
+            window.location.href = `/transaction/edit/${data.id}`;
 
         } catch (err) {
             console.error(err);
