@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("image", compressedFile, "receipt.jpg");
 
         try {
-            const res = await fetch("/process_receipt", {
+            const res = await fetch("/transaction/process_receipt", {
                 method: "POST",
                 body: formData
             });

@@ -212,7 +212,7 @@ window.addEventListener("DOMContentLoaded", () => {
             type: selectedType
         };
 
-        const res = await fetch("/update_expense", {
+        const res = await fetch("/transaction/update_expense", {
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(payload)
@@ -224,7 +224,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         alert("保存成功！");
-        window.location.href = "/history";
+        window.location.href = "/transaction/history";
     });
 
     // =====================
@@ -235,13 +235,13 @@ window.addEventListener("DOMContentLoaded", () => {
         deleteBtn.addEventListener("click", async () => {
             if (!confirm("本当に削除しますか？")) return;
 
-            const res = await fetch(`/delete_expense/${data.id}`, {
+            const res = await fetch(`/transaction/delete_expense/${data.id}`, {
                 method: "DELETE"
             });
 
             if (res.ok) {
                 alert("削除しました");
-                window.location.href = "/history";
+                window.location.href = "/transaction/history";
             } else {
                 alert("削除失敗");
             }

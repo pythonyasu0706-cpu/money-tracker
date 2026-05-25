@@ -231,7 +231,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             type: selectedType
         };
 
-        const res = await fetch("/create_expense", {
+        const res = await fetch("/transaction/create_expense", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -243,6 +243,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         alert("保存成功！");
-        window.location.href = "/history";
+        window.location.href = "/transaction/history";
     });
 });
