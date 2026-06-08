@@ -42,7 +42,18 @@ def create_app():
     app = Flask(__name__)
 
     # 設定
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+    # app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+
+    # 環境変数から取得（ローカル開発用にSQLiteをフォールバックに指定しておくと便利です）
+    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///local.db")
+
+    # Neonの 'postgres://' を SQLAlchemy 用の 'postgresql://' に変換
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 警告を非表示にするため推奨
+
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
     resend.api_key = os.getenv("RESEND_API_KEY")
 
