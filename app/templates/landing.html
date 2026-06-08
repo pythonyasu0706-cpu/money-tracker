@@ -4,104 +4,66 @@
 {% endblock %}
 {% block main_class %}pt-24 pb-[calc(8rem+32px)] px-margin-mobile max-w-container-max mx-auto{% endblock %}
 {% block content %}
-<!-- Page Title -->
+
 <div class="mb-stack-lg text-left md:text-left">
-<h2 class="font-h2 text-h2 text-primary">このアプリについて</h2>
+    <h2 class="font-h2 text-h2 text-primary">このアプリについて</h2>
     <p class="text-on-surface-variant">
-      レシートをアップロードするだけで、自動で経費データを作成・管理できます。
+        レシートをアップロードするだけで、自動で経費データを作成・管理できます。
     </p>
 </div>
-  <!-- What is -->
-  <section class="bg-surface-container p-6 rounded-xl space-y-2">
+
+<section class="bg-surface-container p-6 rounded-xl space-y-2 mb-10">
     <h3 class="text-xl font-semibold text-primary">できること</h3>
     <ul class="list-disc pl-5 text-on-surface-variant space-y-1">
-      <li>レシート画像をOCRで自動読み取り</li>
-      <li>店名・日付・金額を自動抽出</li>
-      <li>勘定科目をAI提案</li>
-      <li>手動編集で正確に修正可能</li>
-      <li>履歴・分析で支出を可視化</li>
+        <li>レシート画像をOCRで自動読み取り</li>
+        <li>店名・日付・金額を自動抽出</li>
+        <li>勘定科目をAI提案</li>
+        <li>手動編集で正確に修正可能</li>
+        <li>履歴データをExcel形式でダウンロード</li>
+        <li>履歴・分析で支出を可視化</li>
     </ul>
-  </section>
+</section>
 
-  <!-- Flow -->
-  <section class="space-y-4 mt-4">
-<div class="mb-stack-md text-left md:text-left mt-5">
-<h2 class="font-h2 text-h2 text-primary">使い方</h2>
+<div class="mb-stack-md text-left md:text-left mt-10">
+    <h2 class="font-h2 text-h2 text-primary">直感的な使い方</h2>
 </div>
-    <div class="grid gap-4">
-
-      <div class="p-4 border rounded-lg bg-surface">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="material-symbols-outlined text-secondary">upload</span>
-          <h4 class="font-semibold">1. アップロード</h4>
-        </div>
-        <p class="text-sm text-on-surface-variant">
-          レシート画像を選択してアップロードします。
-        </p>
-      </div>
-
-      <div class="p-4 border rounded-lg bg-surface">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="material-symbols-outlined text-secondary">search</span>
-          <h4 class="font-semibold">2. OCR解析</h4>
-        </div>
-        <p class="text-sm text-on-surface-variant">
-          画像から文字を自動抽出し、経費データを生成します。
-        </p>
-      </div>
-
-      <div class="p-4 border rounded-lg bg-surface">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="material-symbols-outlined text-secondary">edit</span>
-          <h4 class="font-semibold">3. 確認・修正</h4>
-        </div>
-        <p class="text-sm text-on-surface-variant">
-          必要に応じて店名・金額・カテゴリを修正できます。
-        </p>
-      </div>
-
-      <div class="p-4 border rounded-lg bg-surface">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="material-symbols-outlined text-secondary">analytics</span>
-          <h4 class="font-semibold">4. 分析</h4>
-        </div>
-        <p class="text-sm text-on-surface-variant">
-          履歴データから支出傾向をグラフで確認できます。
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- サンプル -->
-    <div class="mb-stack-md text-left md:text-left mt-5">
-    <h2 class="font-h2 text-h2 text-primary">サンプル</h2>
-    </div>
     <!-- 遷移説明 -->
-    <div class="flex flex-col md:flex-row items-center justify-center gap-4 py-10">
-        <div class="flex flex-col items-center">
-            <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
-                1
-            </div>
-            <p class="text-sm mt-2">アップロード</p>
+<div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-4 py-10">
+    
+    <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
+            1
         </div>
-        <!-- 区切り線 -->
-        <div class="w-[2px] h-8 bg-outline md:w-16 md:h-[2px]"></div>
-        <div class="flex flex-col items-center">
-            <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
-                2
-            </div>
-            <p class="text-sm mt-2">OCR解析</p>
-        </div>
-        <!-- 区切り線 -->
-        <div class="w-[2px] h-8 bg-outline md:w-16 md:h-[2px]"></div>
-        <div class="flex flex-col items-center">
-            <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
-                3
-            </div>
-            <p class="text-sm mt-2">履歴保存</p>
-        </div>
+        <p class="text-sm mt-2">アップロード・解析</p>
     </div>
+    <div class="w-[2px] h-8 bg-outline md:w-16 md:h-[2px] md:mt-5"></div>
+    <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
+            2
+        </div>
+        <p class="text-sm mt-2">確認・修正</p>
+    </div>
+    <div class="w-[2px] h-8 bg-outline md:w-16 md:h-[2px] md:mt-5"></div>
+    <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
+            3
+        </div>
+        <p class="text-sm mt-2">履歴管理・出力</p>
+    </div>
+    <div class="w-[2px] h-8 bg-outline md:w-16 md:h-[2px] md:mt-5"></div>
+    <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
+            4
+        </div>
+        <p class="text-sm mt-2">収支分析</p>
+    </div>
+</div>
+
+<!-- 画面遷移説明 -->
+<div class="text-center my-6">
+    <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">STEP 1</span>
+    <h3 class="text-xl font-bold text-primary mt-2">レシートをアップロード</h3>
+</div>
 
     <!-- アップロード画面サンプル -->
     <div class="pb-8 scale-[0.95] h-full flex flex-col gap-stack-lg mx-auto">
@@ -282,29 +244,20 @@
                         保存する
                     </button>
                 </div>
-                <!-- <div class="flex flex-col sm:flex-row gap-stack-md mt-4 mb-28">
-                    <button type="button" id="saveBtn" class="flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined" data-icon="save" style="font-variation-settings: 'FILL' 1;">save</span>
-                                保存する
-                            </button>
-                </div> -->
             </section>
         </div>
     </div>
 
-<!-- 画面遷移説明 -->
-    <div class="flex flex-col items-center py-8">
-        <p class="text-h4 text-primary font-bold mb-2">
-            レシートをアップロードするだけ
-        </p>
-        <span class="material-symbols-outlined text-4xl text-secondary">
-            arrow_downward
-        </span>
+<div class="flex flex-col items-center py-6">
+    <span class="material-symbols-outlined text-4xl text-secondary animate-bounce">arrow_downward</span>
+    <p class="text-sm font-bold text-primary mt-2">AIが文字を自動抽出！</p>
+</div>
 
-        <p class="text-h4 text-primary font-bold mb-2">
-            AIが自動解析
-        </p>
-    </div>
+<div class="text-center my-6">
+    <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">STEP 2</span>
+    <h3 class="text-xl font-bold text-primary mt-2">読み取り結果の確認・編集</h3>
+</div>
+
 <!-- OCR結果ページサンプル -->
     <div class="max-w-5xl scale-[0.95] flex flex-col gap-stack-md max-w-container-max w-full">
         <section class="text-center space-y-stack-sm">
@@ -486,26 +439,19 @@
         <span class="material-symbols-outlined" data-icon="save" style="font-variation-settings: 'FILL' 1;">save</span>
                     保存する
                 </button>
-        <!-- <button id="deleteBtn" class="flex-1 bg-white border border-secondary text-secondary py-4 rounded-lg font-h3 text-h3 hover:bg-surface-container transition-all active:bg-secondary flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined" data-icon="delete">delete</span>
-                    削除
-                </button> -->
     </div>
 </div>
 
 <!-- 画面遷移説明 -->
-    <div class="flex flex-col items-center py-8">
-        <p class="text-h4 text-primary font-bold mb-2">
-            結果を確認・修正
-        </p>
-        <span class="material-symbols-outlined text-4xl text-secondary">
-            arrow_downward
-        </span>
+<div class="flex flex-col items-center py-6">
+    <span class="material-symbols-outlined text-4xl text-secondary animate-bounce">arrow_downward</span>
+    <p class="text-sm font-bold text-primary mt-2">データを安全に蓄積＆ワンクリック出力</p>
+</div>
 
-        <p class="text-h4 text-primary font-bold mb-2">
-            履歴画面へ
-        </p>
-    </div>
+<div class="text-center my-6">
+    <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">STEP 3</span>
+    <h3 class="text-xl font-bold text-primary mt-2">入力履歴の管理とExcelエクスポート</h3>
+</div>
 
 <!-- 履歴サンプル -->
 <div class="max-w-5xl mx-auto scale-[0.95] pb-4 flex justify-start">
@@ -598,13 +544,13 @@
   </div>
   <!-- Entry Card 5 - Confidence Warning Case -->
   <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
-  <div class="flex justify-between items-start mb-2">
-  <div>
-  <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
-  <h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
-  </div>
-  <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
-  </div>
+    <div class="flex justify-between items-start mb-2">
+        <div>
+            <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
+            <h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
+        </div>
+    <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
+    </div>
   <div class="flex justify-between items-end">
   <p class="font-h2 text-h2 text-secondary">¥4,200</p>
   </div>
@@ -612,16 +558,123 @@
   </div>
 </section>
 
+<!-- Excel出力 -->
+<div class="max-w-5xl mx-auto mt-16 space-y-6">
+    <div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-end gap-4 pointer-events-none opacity-90">
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-medium text-on-surface-variant font-label-caps mb-1">開始月</label>
+                <div class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary text-sm flex justify-between items-center">
+                    <span>2026年05月</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+                </div>
+            </div>
+            <div class="hidden md:block pb-3 text-on-surface-variant font-bold">〜</div>
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-medium text-on-surface-variant font-label-caps mb-1">終了月</label>
+                <div class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary text-sm flex justify-between items-center">
+                    <span>2026年05月</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+                </div>
+            </div>
+            <div class="w-full md:w-auto">
+                <div class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 bg-secondary text-white text-sm font-medium rounded-lg whitespace-nowrap shadow-sm">
+                    <span class="material-symbols-outlined mr-2 text-[18px]">download</span>
+                    期間を指定してExcel出力
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!-- 画面遷移説明 -->
-    <div class="flex flex-col items-center pt-8">
+    <!-- <div class="flex flex-col items-center py-8"></div>
         <span class="material-symbols-outlined text-4xl text-secondary">
             arrow_downward
         </span>
 
         <p class="text-h4 text-primary font-bold mb-2">
-            分析画面で収支を把握
+            ダウンロードした.xlsxファイルで確認
         </p>
+    </div> -->
+
+<!-- Excel出力イメージ -->
+    <div class="space-y-2">
+        <div class="overflow-x-auto border border-slate-300 rounded-lg shadow-sm font-sans">
+            <table class="min-w-[700px] w-full border-collapse bg-white text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 border-b border-slate-300 text-slate-400 text-center select-none text-[10px]">
+                    <tr>
+                        <th class="border-r border-slate-300 p-1 w-10 bg-slate-200"></th>
+                        <th class="border-r border-slate-300 p-1 font-normal">A</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">B</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">C</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">D</th>
+                        <th class="p-1 font-normal">E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-slate-300" style="font-family: 'Segoe UI', 'Meiryo UI', sans-serif;">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 font-medium select-none">1</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">日付</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">カテゴリ</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">店名</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center text-right">支出（円）</td>
+                        <td class="p-2 font-bold bg-[#2C3E50] text-white text-center text-right">収入（円）</td>
+                    </tr>
+                    <tr class="border-b border-slate-200 hover:bg-slate-50">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">2</td>
+                        <td class="border-r border-slate-200 p-2 text-center">2026/05/20</td>
+                        <td class="border-r border-slate-200 p-2 text-left">食費</td>
+                        <td class="border-r border-slate-200 p-2 text-left">セブンイレブン</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,200</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200 hover:bg-slate-50">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">3</td>
+                        <td class="border-r border-slate-200 p-2 text-center">2026/05/19</td>
+                        <td class="border-r border-slate-200 p-2 text-left">旅費交通費</td>
+                        <td class="border-r border-slate-200 p-2 text-left">JR西日本</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">560</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200 bg-[#F5F7FA] text-[#1A252F] font-bold">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">4</td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2 text-right">2026年05月 小計</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,760</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-1 select-none">5</td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="p-1"></td>
+                    </tr>
+                    <tr class="bg-[#E2E8F0] text-[#2C3E50] font-bold border-t-2 border-b-4 border-double border-[#2C3E50]">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">6</td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2 text-right">合計</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,760</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
+
+<div class="flex flex-col items-center py-6">
+    <span class="material-symbols-outlined text-4xl text-secondary animate-bounce">arrow_downward</span>
+    <p class="text-sm font-bold text-primary mt-2">ダッシュボードで収支の偏りを一目で把握</p>
+</div>
+
+<div class="text-center my-6">
+    <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">STEP 4</span>
+    <h3 class="text-xl font-bold text-primary mt-2">グラフで支出傾向をビジュアル分析</h3>
+</div>
 
 <!-- 会計分析サンプル -->
 <div class="max-w-5xl mx-auto scale-[0.95] space-y-8">

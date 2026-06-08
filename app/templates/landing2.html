@@ -1,162 +1,9 @@
 <!-- templates/landing.html -->
-<!DOCTYPE html>
-
-<html class="light" lang="ja"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&amp;family=Inter:wght@500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-error": "#ffffff",
-                    "secondary-container": "#66affe",
-                    "on-tertiary": "#ffffff",
-                    "background": "#f7fafc",
-                    "on-tertiary-fixed-variant": "#00522f",
-                    "tertiary": "#002713",
-                    "tertiary-container": "#003f23",
-                    "inverse-surface": "#2d3133",
-                    "inverse-on-surface": "#eef1f3",
-                    "on-primary": "#ffffff",
-                    "on-tertiary-fixed": "#002110",
-                    "on-surface-variant": "#43474e",
-                    "outline-variant": "#c4c6cf",
-                    "surface-variant": "#e0e3e5",
-                    "error": "#ba1a1a",
-                    "surface-container-high": "#e5e9eb",
-                    "on-primary-fixed-variant": "#2d476f",
-                    "tertiary-fixed-dim": "#74db9d",
-                    "surface-container-low": "#f1f4f6",
-                    "surface-container-lowest": "#ffffff",
-                    "on-background": "#181c1e",
-                    "surface-tint": "#455f88",
-                    "error-container": "#ffdad6",
-                    "surface": "#f7fafc",
-                    "on-secondary-fixed-variant": "#00497e",
-                    "on-primary-container": "#86a0cd",
-                    "on-surface": "#181c1e",
-                    "outline": "#74777f",
-                    "on-primary-fixed": "#001b3c",
-                    "secondary": "#0061a5",
-                    "secondary-fixed": "#d2e4ff",
-                    "surface-container": "#ebeef0",
-                    "surface-bright": "#f7fafc",
-                    "on-error-container": "#93000a",
-                    "primary-fixed-dim": "#adc7f7",
-                    "primary": "#002045",
-                    "primary-container": "#1a365d",
-                    "primary-fixed": "#d6e3ff",
-                    "on-secondary-fixed": "#001d37",
-                    "on-secondary-container": "#004172",
-                    "surface-container-highest": "#e0e3e5",
-                    "secondary-fixed-dim": "#9fcaff",
-                    "tertiary-fixed": "#91f8b8",
-                    "surface-dim": "#d7dadc",
-                    "on-secondary": "#ffffff",
-                    "on-tertiary-container": "#4bb278",
-                    "inverse-primary": "#adc7f7"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "margin-mobile": "16px",
-                    "unit": "8px",
-                    "container-max": "1200px",
-                    "gutter": "24px",
-                    "stack-sm": "8px",
-                    "stack-lg": "32px",
-                    "stack-md": "16px",
-                    "margin-desktop": "40px"
-            },
-            "fontFamily": {
-                    "h3": ["Noto Sans JP"],
-                    "body-md": ["Noto Sans JP"],
-                    "h2": ["Noto Sans JP"],
-                    "body-sm": ["Noto Sans JP"],
-                    "label-caps": ["Inter"],
-                    "data-entry": ["Inter"],
-                    "body-lg": ["Noto Sans JP"],
-                    "h1": ["Noto Sans JP"]
-            },
-            "fontSize": {
-                    "h3": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "h2": ["24px", {"lineHeight": "1.4", "fontWeight": "700"}],
-                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                    "data-entry": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "500"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "h1": ["30px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .receipt-highlight {
-            background: linear-gradient(135deg, rgba(102, 175, 254, 0.1) 0%, rgba(26, 54, 93, 0.05) 100%);
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-surface font-body-md text-on-surface">
-
-<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 bg-surface dark:bg-on-background border-b border-surface-variant dark:border-outline-variant">
-<div class="flex items-center gap-4">
-<!-- <span class="material-symbols-outlined text-secondary dark:text-secondary-fixed-dim font-h3 text-h3 cursor-pointer hover:opacity-80 transition-opacity scale-95 active:scale-90">arrow_back</span> -->
-<a href="{% if current_user.is_authenticated %}{{ url_for('upload') }}{% else %}{{ url_for('landing') }}{% endif %}">
-<h1 class="font-h2 text-h2 text-primary dark:text-primary-fixed">OCR Expense</h1>
-</a>
-<div class="flex items-center">
-        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">{{ title }}</h1>
-    </div>
-</div>
-<div class="hidden md:flex gap-6 items-center">
-<a href="{{ url_for('upload') }}">
-<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">UPLOAD</span></a>
-<a href="{{ url_for('history') }}">
-<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">HISTORY</span></a>
-<a href="{{ url_for('analysis') }}">
-<span class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps cursor-pointer hover:opacity-80 transition-opacity">ANALYSIS</span></a>
-    <a href="{{ url_for('account') }}"
-       class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition">
-        <span class="material-symbols-outlined text-secondary text-2xl">
-            account_circle
-        </span>
-    </a>
-</div>
-    <!-- ⭐ スマホ用アカウントボタン -->
-    <a href="{{ url_for('account') }}"
-       class="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition">
-        <span class="material-symbols-outlined text-secondary text-2xl">
-            account_circle
-        </span>
-    </a>
-</header>
-
-<main class="pt-24 pb-[calc(8rem+32px)] px-margin-mobile max-w-container-max mx-auto">
-
-<!-- {% extends "base.html" %}
+{% extends "base.html" %}
 {% block header_right %}
 {% endblock %}
 {% block main_class %}pt-24 pb-[calc(8rem+32px)] px-margin-mobile max-w-container-max mx-auto{% endblock %}
-{% block content %} -->
+{% block content %}
 <!-- Page Title -->
 <div class="mb-stack-lg text-left md:text-left">
 <h2 class="font-h2 text-h2 text-primary">このアプリについて</h2>
@@ -172,6 +19,7 @@
       <li>店名・日付・金額を自動抽出</li>
       <li>勘定科目をAI提案</li>
       <li>手動編集で正確に修正可能</li>
+      <li>履歴データをExcel形式でダウンロード</li>
       <li>履歴・分析で支出を可視化</li>
     </ul>
   </section>
@@ -215,8 +63,18 @@
 
       <div class="p-4 border rounded-lg bg-surface">
         <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-secondary">download</span>
+          <h4 class="font-semibold">4. Excel出力</h4>
+        </div>
+        <p class="text-sm text-on-surface-variant">
+          登録した経費データは、いつでもExcelなどで開けるExcel形式で一括出力が可能です。
+        </p>
+      </div>
+
+      <div class="p-4 border rounded-lg bg-surface">
+        <div class="flex items-center gap-2 mb-2">
           <span class="material-symbols-outlined text-secondary">analytics</span>
-          <h4 class="font-semibold">4. 分析</h4>
+          <h4 class="font-semibold">5. 分析</h4>
         </div>
         <p class="text-sm text-on-surface-variant">
           履歴データから支出傾向をグラフで確認できます。
@@ -226,11 +84,11 @@
     </div>
   </section>
 
-  <!-- サンプル画面 -->
-<div class="mb-stack-md text-left md:text-left mt-5">
-<h2 class="font-h2 text-h2 text-primary">サンプル</h2>
-</div>
-      <!-- 遷移説明 -->
+  <!-- サンプル -->
+    <div class="mb-stack-md text-left md:text-left mt-5">
+    <h2 class="font-h2 text-h2 text-primary">サンプル</h2>
+    </div>
+    <!-- 遷移説明 -->
     <div class="flex flex-col md:flex-row items-center justify-center gap-4 py-10">
         <div class="flex flex-col items-center">
             <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">
@@ -256,14 +114,14 @@
         </div>
     </div>
 
-<div class="max-w-5xl mx-auto scale-[0.95]">
-<!-- アップロード画面 -->
-    <div class="w-full h-full flex flex-col gap-stack-lg mx-auto">
+    <!-- アップロード画面サンプル -->
+    <div class="pb-8 scale-[0.95] h-full flex flex-col gap-stack-lg mx-auto">
         <section class="text-center space-y-stack-sm">
             <h2 class="font-h1 text-h1 text-primary">経費登録</h2>
             <p class="font-body-md text-on-surface-variant">レシートをアップロードまたは手入力してください。</p>
         </section>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-stretch">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter md:items-stretch">
+            <!-- <section class="grid grid-cols-1  gap-stack-md"> -->
             <section class="flex flex-col h-full">
                 <section class="text-center space-y-stack-sm p-2">
                     <h3 class="font-h3 text-h3 text-primary">レシートをアップロード</h3>
@@ -271,9 +129,9 @@
                 <form id="uploadForm" action="/process_receipt" method="POST" enctype="multipart/form-data">
                 <!-- enctypeはファイルをアップロードするために必要な属性で、"multipart/form-data"を指定することで、フォームがファイルデータを正しく送信できるようになります。 -->
                     <div id="uploadBox" onclick="document.getElementById('fileInput').click()" 
-                        class="w-full
+                        class="md:h-[600px]
                                 aspect-[4/3]
-                                md:h-[600px]
+                                w-full
                                 bg-surface-container-lowest
                                 border-2 border-dashed
                                 border-outline-variant
@@ -325,8 +183,7 @@
                     <h3 class="font-h3 text-h3 text-primary">会計情報を入力</h3>
                 </section>
                 <!-- 会計入力エリア -->
-                <div class="flex-1 flex flex-col">
-                <div id="formArea" class="bg-surface-container-lowest flex-1 flex flex-col md:h-[700px]">
+                <div id="formArea" class="bg-surface-container-lowest flex-1 flex flex-col">
                     <!-- Main Input Fields -->
                     <div class="h-full bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant shadow-[0px_4px_12px_rgba(26,54,93,0.05)] flex flex-col gap-stack-md">
                         <!-- 収入支出切替 -->
@@ -428,7 +285,6 @@
                         </div>
                     </div>
                 </div>
-                </div>
                 <!-- Action Buttons -->
                 <br>
                 <div class="flex justify-center">
@@ -446,6 +302,8 @@
             </section>
         </div>
     </div>
+
+<!-- 画面遷移説明 -->
     <div class="flex flex-col items-center py-8">
         <p class="text-h4 text-primary font-bold mb-2">
             レシートをアップロードするだけ
@@ -454,13 +312,12 @@
             arrow_downward
         </span>
 
-        <p class="text-sm text-on-surface-variant mt-2">
+        <p class="text-h4 text-primary font-bold mb-2">
             AIが自動解析
         </p>
     </div>
-
 <!-- OCR結果ページサンプル -->
-    <div class="flex flex-col gap-stack-md max-w-container-max mx-auto w-full">
+    <div class="max-w-5xl scale-[0.95] flex flex-col gap-stack-md max-w-container-max w-full">
         <section class="text-center space-y-stack-sm">
             <h2 class="font-h1 text-h1 text-primary">読み取り結果</h2>
             <p class="font-body-sm text-on-surface-variant mt-2">OCRで抽出されたテキストの内容を確認してください。</p>
@@ -645,297 +502,454 @@
                     削除
                 </button> -->
     </div>
+</div>
+
+<!-- 画面遷移説明 -->
+    <div class="flex flex-col items-center py-8">
+        <p class="text-h4 text-primary font-bold mb-2">
+            結果を確認・修正
+        </p>
+        <span class="material-symbols-outlined text-4xl text-secondary">
+            arrow_downward
+        </span>
+
+        <p class="text-h4 text-primary font-bold mb-2">
+            履歴画面へ
+        </p>
+    </div>
 
 <!-- 履歴サンプル -->
-    <div class="flex items-center pb-4">
-            <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">入力履歴</h1>
-    </div>
-    <section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md">
-    <div class="relative flex-grow">
-    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-    <input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-data-entry focus:border-secondary focus:ring-1 focus:ring-secondary transition-all outline-none" placeholder="店舗名やカテゴリで検索" type="text"/>
-    </div>
-    <div class="flex gap-stack-sm overflow-x-auto pb-2 scrollbar-hide">
-    <button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label-caps whitespace-nowrap">すべて</button>
-    <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">飲食</button>
-    <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">旅費交通費</button>
-    <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">消耗品</button>
-    <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">その他</button>
-    </div>
-    </section>
-    <!-- History Content -->
-    <div class="space-y-stack-lg">
-    <!-- Month Group: December -->
-    <section>
-    <h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
-    <span class="w-2 h-2 bg-secondary rounded-full"></span>
-                        2023年12月
-                    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
-    <!-- Entry Card 1 -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+<div class="max-w-5xl mx-auto scale-[0.95] pb-4 flex justify-start">
+    <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">
+        入力履歴
+    </h1>
+</div>
+<section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md">
+  <div class="relative flex-grow">
+  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+  <input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-data-entry focus:border-secondary focus:ring-1 focus:ring-secondary transition-all outline-none" placeholder="店舗名やカテゴリで検索" type="text"/>
+  </div>
+  <div class="flex gap-stack-sm overflow-x-auto pb-2 scrollbar-hide">
+  <button class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label-caps whitespace-nowrap">すべて</button>
+  <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">飲食</button>
+  <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">旅費交通費</button>
+  <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">消耗品</button>
+  <button class="bg-surface-container-high text-on-surface-variant px-4 py-2 rounded-full font-label-caps whitespace-nowrap hover:bg-surface-variant transition-colors">その他</button>
+  </div>
+</section>
+<!-- History Content -->
+<div class="space-y-stack-lg">
+<!-- Month Group: December -->
+<section>
+  <h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
+  <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                      2023年12月
+                  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+  <!-- Entry Card 1 -->
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+  <div class="flex justify-between items-start mb-2">
+  <div>
+  <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.18</p>
+  <h3 class="font-h3 text-body-lg text-primary">スターバックスコーヒー 渋谷店</h3>
+  </div>
+  <span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">飲食</span>
+  </div>
+  <div class="flex justify-between items-end">
+  <p class="font-h2 text-h2 text-secondary">¥1,250</p>
+  </div>
+  </div>
+  <!-- Entry Card 2 -->
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+  <div class="flex justify-between items-start mb-2">
+  <div>
+  <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.15</p>
+  <h3 class="font-h3 text-body-lg text-primary">タクシー利用（日本交通）</h3>
+  </div>
+  <span class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">旅費交通費</span>
+  </div>
+  <div class="flex justify-between items-end">
+  <p class="font-h2 text-h2 text-secondary">¥3,480</p>
+  </div>
+  </div>
+  <!-- Entry Card 3 -->
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+  <div class="flex justify-between items-start mb-2">
+  <div>
+  <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.10</p>
+  <h3 class="font-h3 text-body-lg text-primary">セブンイレブン 代々木店</h3>
+  </div>
+  <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
+  </div>
+  <div class="flex justify-between items-end">
+  <p class="font-h2 text-h2 text-secondary">¥842</p>
+  </div>
+  </div>
+  </div>
+</section>
+<!-- Month Group: November -->
+<section>
+  <h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
+  <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                      2023年11月
+                  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+  <!-- Entry Card 4 -->
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
+  <div class="flex justify-between items-start mb-2">
+  <div>
+  <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.28</p>
+  <h3 class="font-h3 text-body-lg text-primary">Amazon.co.jp</h3>
+  </div>
+  <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
+  </div>
+  <div class="flex justify-between items-end">
+  <p class="font-h2 text-h2 text-secondary">¥12,800</p>
+  </div>
+  </div>
+  <!-- Entry Card 5 - Confidence Warning Case -->
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
     <div class="flex justify-between items-start mb-2">
-    <div>
-    <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.18</p>
-    <h3 class="font-h3 text-body-lg text-primary">スターバックスコーヒー 渋谷店</h3>
-    </div>
-    <span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">飲食</span>
-    </div>
-    <div class="flex justify-between items-end">
-    <p class="font-h2 text-h2 text-secondary">¥1,250</p>
-    </div>
-    </div>
-    <!-- Entry Card 2 -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
-    <div class="flex justify-between items-start mb-2">
-    <div>
-    <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.15</p>
-    <h3 class="font-h3 text-body-lg text-primary">タクシー利用（日本交通）</h3>
-    </div>
-    <span class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">旅費交通費</span>
-    </div>
-    <div class="flex justify-between items-end">
-    <p class="font-h2 text-h2 text-secondary">¥3,480</p>
-    </div>
-    </div>
-    <!-- Entry Card 3 -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
-    <div class="flex justify-between items-start mb-2">
-    <div>
-    <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.12.10</p>
-    <h3 class="font-h3 text-body-lg text-primary">セブンイレブン 代々木店</h3>
-    </div>
-    <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
-    </div>
-    <div class="flex justify-between items-end">
-    <p class="font-h2 text-h2 text-secondary">¥842</p>
-    </div>
-    </div>
-    </div>
-    </section>
-    <!-- Month Group: November -->
-    <section>
-    <h2 class="font-label-caps text-label-caps text-secondary mb-stack-md flex items-center gap-2">
-    <span class="w-2 h-2 bg-secondary rounded-full"></span>
-                        2023年11月
-                    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
-    <!-- Entry Card 4 -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
-    <div class="flex justify-between items-start mb-2">
-    <div>
-    <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.28</p>
-    <h3 class="font-h3 text-body-lg text-primary">Amazon.co.jp</h3>
-    </div>
-    <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">消耗品</span>
-    </div>
-    <div class="flex justify-between items-end">
-    <p class="font-h2 text-h2 text-secondary">¥12,800</p>
-    </div>
-    </div>
-    <!-- Entry Card 5 - Confidence Warning Case -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(26,54,93,0.05)] hover:shadow-lg transition-shadow cursor-pointer group active:scale-[0.98]">
-    <div class="flex justify-between items-start mb-2">
-    <div>
-    <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
-    <h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
-    </div>
+        <div>
+            <p class="font-label-caps text-label-caps text-on-surface-variant opacity-80 mb-1">2023.11.20</p>
+            <h3 class="font-h3 text-body-lg text-primary">不明な店舗</h3>
+        </div>
     <span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase">未分類</span>
     </div>
-    <div class="flex justify-between items-end">
-    <p class="font-h2 text-h2 text-secondary">¥4,200</p>
-    </div>
-    </div>
-    </div>
-    </section>
+  <div class="flex justify-between items-end">
+  <p class="font-h2 text-h2 text-secondary">¥4,200</p>
+  </div>
+  </div>
+  </div>
+</section>
 
-    <!-- 会計分析サンプル -->
-    <div class="space-y-8">
-        <div class="flex items-center pt-4">
-            <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">会計分析</h1>
-        </div>
-    <!-- 月選択 -->
-    <select class="px-3 py-2 border rounded bg-white w-[150px]">
-        <option selected>2026-05</option>
-        <option>2026-04</option>
-        <option>2026-03</option>
-    </select>
+<!-- Excel出力 -->
+<div class="max-w-5xl mx-auto mt-16 space-y-6">
+    <!-- <div class="mb-stack-md text-left">
+        <h2 class="font-h2 text-h2 text-primary">便利なExcelエクスポート</h2>
+        <p class="text-on-surface-variant mt-2">
+            登録したデータは、月別に自動集計・デザイン装飾されたExcelファイルとしていつでも出力可能です。
+        </p>
+    </div> -->
 
-    <!-- ===================== -->
-    <!-- 月セクション -->
-    <!-- ===================== -->
-    <section class="month-section">
+<!-- 画面遷移説明 -->
+    <div class="flex flex-col items-center py-8"></div>
+        <span class="material-symbols-outlined text-4xl text-secondary">
+            arrow_downward
+        </span>
 
-    <!-- ===================== -->
-    <!-- PCテーブル -->
-    <!-- ===================== -->
-    <div class="hidden md:block overflow-x-auto">
-    <table class="min-w-[700px] w-full border border-gray-200 rounded-lg">
-        <thead class="bg-gray-100 text-left">
-            <tr>
-                <th class="p-3">日付</th>
-                <th class="p-3">店名</th>
-                <th class="p-3">カテゴリ</th>
-                <th class="p-3 text-right">支出</th>
-                <th class="p-3 text-right">収入</th>
-                <th class="p-3 text-right"></th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            <!-- 行 -->
-            <tr class="border-t hover:bg-gray-50 cursor-pointer">
-                <td class="p-3 text-sm text-gray-500">2026.05.20</td>
-                <td class="p-3 font-medium">セブンイレブン</td>
-                <td class="p-3">
-                    <span class="px-2 py-1 rounded text-xs bg-amber-300">
-                        食費
-                    </span>
-                </td>
-                <td class="p-3 text-right font-bold text-secondary">¥1200</td>
-                <td class="p-3 text-right font-bold text-green-600"></td>
-                <td class="p-3 text-right">
-                    <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
-                        編集
-                    </button>
-                </td>
-            </tr>
-
-            <tr class="border-t hover:bg-gray-50 cursor-pointer">
-                <td class="p-3 text-sm text-gray-500">2026.05.19</td>
-                <td class="p-3 font-medium">JR西日本</td>
-                <td class="p-3">
-                    <span class="px-2 py-1 rounded text-xs bg-purple-300">
-                        旅費交通費
-                    </span>
-                </td>
-                <td class="p-3 text-right font-bold text-secondary">¥560</td>
-                <td class="p-3 text-right font-bold text-green-600"></td>
-                <td class="p-3 text-right">
-                    <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
-                        編集
-                    </button>
-                </td>
-            </tr>
-
-            <tr class="border-t hover:bg-gray-50 cursor-pointer">
-                <td class="p-3 text-sm text-gray-500">2026.05.18</td>
-                <td class="p-3 font-medium">給料</td>
-                <td class="p-3">
-                    <span class="px-2 py-1 rounded text-xs bg-red-300">
-                        給与
-                    </span>
-                </td>
-                <td class="p-3 text-right font-bold text-red-400"></td>
-                <td class="p-3 text-right font-bold text-green-600">¥250000</td>
-                <td class="p-3 text-right">
-                    <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
-                        編集
-                    </button>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
+        <p class="text-h4 text-primary font-bold mb-2">
+            期間を指定して、必要なデータをExcelファイルで出力
+        </p>
     </div>
 
-    <!-- ===================== -->
-    <!-- スマホカード -->
-    <!-- ===================== -->
-    <div class="md:hidden space-y-3">
-
-        <div class="border rounded-lg p-3 bg-white shadow-sm">
-            <div class="flex justify-between">
-                <span class="text-sm text-gray-500">2026.05.20</span>
-                <span class="font-bold">¥1200</span>
-            </div>
-            <div class="mt-1 font-medium">セブンイレブン</div>
-            <div class="text-xs text-gray-500">食費</div>
-        </div>
-
-        <div class="border rounded-lg p-3 bg-white shadow-sm">
-            <div class="flex justify-between">
-                <span class="text-sm text-gray-500">2026.05.19</span>
-                <span class="font-bold">¥560</span>
-            </div>
-            <div class="mt-1 font-medium">JR西日本</div>
-            <div class="text-xs text-gray-500">旅費交通費</div>
-        </div>
-
-        <div class="border rounded-lg p-3 bg-white shadow-sm">
-            <div class="flex justify-between">
-                <span class="text-sm text-gray-500">2026.05.18</span>
-                <span class="font-bold text-green-600">¥250000</span>
-            </div>
-            <div class="mt-1 font-medium">給料</div>
-            <div class="text-xs text-gray-500">給与</div>
-        </div>
-
-    </div>
-
-    </section>
-
-    <!-- ===================== -->
-    <!-- グラフ -->
-    <!-- ===================== -->
-    <section class="grid grid-cols-1 md:grid-cols-12 gap-4">
-
-        <section class="col-span-5 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
-            <h2 class="text-lg font-bold mb-2">カテゴリ別支出</h2>
-            <canvas id="categoryChart" class="w-full max-w-full"></canvas>
-        </section>
-
-        <section class="col-span-7 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
-            <h2 class="text-lg font-bold mb-2">今月の収支</h2>
-            <div class="p-2 text-sm text-slate-500 space-y-1">
-                <div class="flex justify-between">
-                    <span>支出：</span>
-                    <span>20000円</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>収入：</span>
-                    <span>250000円</span>
+    <div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-end gap-4 pointer-events-none opacity-90">
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-medium text-on-surface-variant font-label-caps mb-1">開始月</label>
+                <div class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary text-sm flex justify-between items-center">
+                    <span>2026年05月</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
                 </div>
             </div>
-            <canvas id="monthlyChart" class="w-full max-w-full"></canvas>
-        </section>
-
-    </section>
-
-    <section class="flex flex-col items-center justify-center mb-10">
-        <h2 class="text-lg font-bold mb-2">日別支出</h2>
-        <canvas id="dailyChart" class="w-full max-w-full"></canvas>
-    </section>
-
+            <div class="hidden md:block pb-3 text-on-surface-variant font-bold">〜</div>
+            <div class="flex-1 min-w-[150px]">
+                <label class="block text-xs font-medium text-on-surface-variant font-label-caps mb-1">終了月</label>
+                <div class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-primary text-sm flex justify-between items-center">
+                    <span>2026年05月</span>
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down</span>
+                </div>
+            </div>
+            <div class="w-full md:w-auto">
+                <div class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 bg-secondary text-white text-sm font-medium rounded-lg whitespace-nowrap shadow-sm">
+                    <span class="material-symbols-outlined mr-2 text-[18px]">download</span>
+                    期間を指定してExcel出力
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Bottom Actions Wrapper (Fixed to contrast with potential BottomNavBar but here standalone) -->
-    <nav class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-surface-variant px-margin-mobile py-stack-md z-50">
-    <div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+<!-- 画面遷移説明 -->
+    <div class="flex flex-col items-center py-8"></div>
+        <span class="material-symbols-outlined text-4xl text-secondary">
+            arrow_downward
+        </span>
 
-        <!-- 主ボタン：ログイン -->
-    <div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
-
-        <!-- ログイン -->
-        <a href="{{ url_for('login') }}"
-        class="w-full md:w-auto min-w-[240px] bg-secondary text-white py-4 px-8 rounded-lg font-h3 flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:scale-90">
-        <span class="material-symbols-outlined">login</span>
-        ログイン
-        </a>
-
-        <!-- 新規登録 -->
-        <a href="{{ url_for('register') }}"
-        class="w-full md:w-auto min-w-[240px] text-secondary font-h3 py-4 px-8 border border-secondary rounded-lg hover:bg-surface-container-low transition-all scale-95 active:scale-90 flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">person_add</span>
-        新規登録
-        </a>
-
+        <p class="text-h4 text-primary font-bold mb-2">
+            ダウンロードした.xlsxファイルで確認
+        </p>
     </div>
+
+<!-- Excel出力イメージ -->
+    <div class="space-y-2">
+        <div class="overflow-x-auto border border-slate-300 rounded-lg shadow-sm font-sans">
+            <table class="min-w-[700px] w-full border-collapse bg-white text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 border-b border-slate-300 text-slate-400 text-center select-none text-[10px]">
+                    <tr>
+                        <th class="border-r border-slate-300 p-1 w-10 bg-slate-200"></th>
+                        <th class="border-r border-slate-300 p-1 font-normal">A</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">B</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">C</th>
+                        <th class="border-r border-slate-300 p-1 font-normal">D</th>
+                        <th class="p-1 font-normal">E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-slate-300" style="font-family: 'Segoe UI', 'Meiryo UI', sans-serif;">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 font-medium select-none">1</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">日付</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">カテゴリ</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center">店名</td>
+                        <td class="border-r border-slate-300 p-2 font-bold bg-[#2C3E50] text-white text-center text-right">支出（円）</td>
+                        <td class="p-2 font-bold bg-[#2C3E50] text-white text-center text-right">収入（円）</td>
+                    </tr>
+                    <tr class="border-b border-slate-200 hover:bg-slate-50">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">2</td>
+                        <td class="border-r border-slate-200 p-2 text-center">2026/05/20</td>
+                        <td class="border-r border-slate-200 p-2 text-left">食費</td>
+                        <td class="border-r border-slate-200 p-2 text-left">セブンイレブン</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,200</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200 hover:bg-slate-50">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">3</td>
+                        <td class="border-r border-slate-200 p-2 text-center">2026/05/19</td>
+                        <td class="border-r border-slate-200 p-2 text-left">旅費交通費</td>
+                        <td class="border-r border-slate-200 p-2 text-left">JR西日本</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">560</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200 bg-[#F5F7FA] text-[#1A252F] font-bold">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">4</td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2 text-right">2026年05月 小計</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,760</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                    <tr class="border-b border-slate-200">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-1 select-none">5</td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="border-r border-slate-200 p-1"></td>
+                        <td class="p-1"></td>
+                    </tr>
+                    <tr class="bg-[#E2E8F0] text-[#2C3E50] font-bold border-t-2 border-b-4 border-double border-[#2C3E50]">
+                        <td class="bg-slate-100 border-r border-slate-300 text-slate-400 text-center p-2 select-none">6</td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2"></td>
+                        <td class="border-r border-slate-200 p-2 text-right">合計</td>
+                        <td class="border-r border-slate-200 p-2 text-right font-mono">1,760</td>
+                        <td class="p-2 text-right font-mono"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+
+<!-- 画面遷移説明 -->
+    <div class="flex flex-col items-center pt-8">
+        <span class="material-symbols-outlined text-4xl text-secondary">
+            arrow_downward
+        </span>
+
+        <p class="text-h4 text-primary font-bold mb-2">
+            分析画面で収支を把握
+        </p>
+    </div>
+
+<!-- 会計分析サンプル -->
+<div class="max-w-5xl mx-auto scale-[0.95] space-y-8">
+     <div class="flex items-center pt-4">
+        <h1 class="font-h3 text-h3 text-secondary dark:text-secondary-fixed-dim">会計分析</h1>
+    </div>
+<!-- 月選択 -->
+<select class="px-3 py-2 border rounded bg-white w-[150px]">
+    <option selected>2026-05</option>
+    <option>2026-04</option>
+    <option>2026-03</option>
+</select>
+
+<!-- ===================== -->
+<!-- 月セクション -->
+<!-- ===================== -->
+<section class="month-section">
+
+<!-- ===================== -->
+<!-- PCテーブル -->
+<!-- ===================== -->
+<div class="hidden md:block overflow-x-auto">
+  <table class="min-w-[700px] w-full border border-gray-200 rounded-lg">
+      <thead class="bg-gray-100 text-left">
+          <tr>
+              <th class="p-3">日付</th>
+              <th class="p-3">店名</th>
+              <th class="p-3">カテゴリ</th>
+              <th class="p-3 text-right">支出</th>
+              <th class="p-3 text-right">収入</th>
+              <th class="p-3 text-right"></th>
+          </tr>
+      </thead>
+
+      <tbody>
+
+          <!-- 行 -->
+          <tr class="border-t hover:bg-gray-50 cursor-pointer">
+              <td class="p-3 text-sm text-gray-500">2026.05.20</td>
+              <td class="p-3 font-medium">セブンイレブン</td>
+              <td class="p-3">
+                  <span class="px-2 py-1 rounded text-xs bg-amber-300">
+                      食費
+                  </span>
+              </td>
+              <td class="p-3 text-right font-bold text-secondary">¥1200</td>
+              <td class="p-3 text-right font-bold text-green-600"></td>
+              <td class="p-3 text-right">
+                  <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                      編集
+                  </button>
+              </td>
+          </tr>
+
+          <tr class="border-t hover:bg-gray-50 cursor-pointer">
+              <td class="p-3 text-sm text-gray-500">2026.05.19</td>
+              <td class="p-3 font-medium">JR西日本</td>
+              <td class="p-3">
+                  <span class="px-2 py-1 rounded text-xs bg-purple-300">
+                      旅費交通費
+                  </span>
+              </td>
+              <td class="p-3 text-right font-bold text-secondary">¥560</td>
+              <td class="p-3 text-right font-bold text-green-600"></td>
+              <td class="p-3 text-right">
+                  <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                      編集
+                  </button>
+              </td>
+          </tr>
+
+          <tr class="border-t hover:bg-gray-50 cursor-pointer">
+              <td class="p-3 text-sm text-gray-500">2026.05.18</td>
+              <td class="p-3 font-medium">給料</td>
+              <td class="p-3">
+                  <span class="px-2 py-1 rounded text-xs bg-red-300">
+                      給与
+                  </span>
+              </td>
+              <td class="p-3 text-right font-bold text-red-400"></td>
+              <td class="p-3 text-right font-bold text-green-600">¥250000</td>
+              <td class="p-3 text-right">
+                  <button class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
+                      編集
+                  </button>
+              </td>
+          </tr>
+
+      </tbody>
+  </table>
+</div>
+
+<!-- ===================== -->
+<!-- スマホカード -->
+<!-- ===================== -->
+<div class="md:hidden space-y-3">
+
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.20</span>
+            <span class="font-bold">¥1200</span>
+        </div>
+        <div class="mt-1 font-medium">セブンイレブン</div>
+        <div class="text-xs text-gray-500">食費</div>
+    </div>
+
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.19</span>
+            <span class="font-bold">¥560</span>
+        </div>
+        <div class="mt-1 font-medium">JR西日本</div>
+        <div class="text-xs text-gray-500">旅費交通費</div>
+    </div>
+
+    <div class="border rounded-lg p-3 bg-white shadow-sm">
+        <div class="flex justify-between">
+            <span class="text-sm text-gray-500">2026.05.18</span>
+            <span class="font-bold text-green-600">¥250000</span>
+        </div>
+        <div class="mt-1 font-medium">給料</div>
+        <div class="text-xs text-gray-500">給与</div>
+    </div>
+
+</div>
+
+</section>
+
+<!-- ===================== -->
+<!-- グラフ -->
+<!-- ===================== -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+    <section class="col-span-5 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">カテゴリ別支出</h2>
+        <canvas id="categoryChart" class="w-full max-w-full"></canvas>
+    </section>
+
+    <section class="col-span-7 flex flex-col items-center justify-center mb-10 w-full overflow-hidden">
+        <h2 class="text-lg font-bold mb-2">今月の収支</h2>
+        <div class="p-2 text-sm text-slate-500 space-y-1">
+            <div class="flex justify-between">
+                <span>支出：</span>
+                <span>20000円</span>
+            </div>
+            <div class="flex justify-between">
+                <span>収入：</span>
+                <span>250000円</span>
+            </div>
+        </div>
+        <canvas id="monthlyChart" class="w-full max-w-full"></canvas>
+    </section>
+
+</section>
+
+<section class="flex flex-col items-center justify-center mb-10">
+    <h2 class="text-lg font-bold mb-2">日別支出</h2>
+    <canvas id="dailyChart" class="w-full max-w-full"></canvas>
+</section>
+
+</div>
+
+{% endblock %}
+<!-- Bottom Actions Wrapper (Fixed to contrast with potential BottomNavBar but here standalone) -->
+{% block bottom_nav %}
+<nav class="fixed bottom-0 w-full bg-surface-container-lowest border-t border-surface-variant px-margin-mobile py-stack-md z-50">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+
+    <!-- 主ボタン：ログイン -->
+  <div class="max-w-container-max mx-auto flex flex-col md:flex-row-reverse items-center justify-center gap-stack-md">
+
+    <!-- ログイン -->
+    <a href="{{ url_for('auth.login') }}"
+      class="w-full md:w-auto min-w-[240px] bg-secondary text-white py-4 px-8 rounded-lg font-h3 flex items-center justify-center gap-2 hover:opacity-90 transition-all scale-95 active:scale-90">
+      <span class="material-symbols-outlined">login</span>
+      ログイン
+    </a>
+
+    <!-- 新規登録 -->
+    <a href="{{ url_for('auth.register') }}"
+      class="w-full md:w-auto min-w-[240px] text-secondary font-h3 py-4 px-8 border border-secondary rounded-lg hover:bg-surface-container-low transition-all scale-95 active:scale-90 flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">person_add</span>
+      新規登録
+    </a>
+
+  </div>
+</div>
 </nav>
+{% endblock %}
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
@@ -991,7 +1005,7 @@ new Chart(document.getElementById("monthlyChart"), {
         indexAxis: 'y',
         plugins: {
             legend: {display: false},
-            tooltip: {enabled: false},
+            tooltip: {enabled: true},
             datalabels: {
                 display: false
             }
@@ -1032,6 +1046,4 @@ new Chart(document.getElementById("dailyChart"), {
     }
 });
 </script>
-</main>
-</body>
-</html>
+{% endblock %}
