@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const colorMap = {
         "食費": "bg-amber-300 text-on-tertiary-fixed-variant",
-        "交通費": "bg-purple-300 text-on-secondary-fixed-variant",
+        "旅費交通費": "bg-purple-300 text-on-secondary-fixed-variant",
         "消耗品費": "bg-tertiary-fixed text-on-surface-variant",
         "その他": "bg-secondary-fixed text-on-surface-variant",
         "all": "bg-secondary-container text-on-secondary-container"

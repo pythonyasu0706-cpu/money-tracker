@@ -30,13 +30,26 @@ def analysis():
     # 月選択
     # =========================
     selected_month = request.args.get("month")
-    today = date.today()
 
+    # 1. まずデータから存在する月の一覧（セレクトボックス用）を出す
+    months = sorted({
+        (e.receipt_date or e.created_at.date()).strftime("%Y-%m")
+        for e in expenses
+    }, reverse=True)
+
+    # 2. 初期表示する月を決める
     if selected_month:
         year, month = map(int, selected_month.split("-"))
     else:
-        year, month = today.year, today.month
-        selected_month = f"{year}-{month:02d}"
+        #  修正ポイント：データが1件でもあるなら、一番新しい月を初期表示にする
+        if months:
+            selected_month = months[0] # 一番データが新しい月（例: 2026-05 など）
+            year, month = map(int, selected_month.split("-"))
+        else:
+            # 完全にデータが空っぽなら今日にする
+            today = date.today()
+            year, month = today.year, today.month
+            selected_month = f"{year}-{month:02d}"
 
     # =========================
     # 月フィルタ

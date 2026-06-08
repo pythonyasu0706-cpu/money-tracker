@@ -10,6 +10,11 @@ window.addEventListener("DOMContentLoaded", () => {
     let selectedCategory = data.category || "";
     let selectedType = data.type || "expense";
 
+    // 表記ゆれ補正（念のため初期ロード時に「旅費」を「旅費交通費」へ）
+    if (selectedCategory === "交通費" || selectedCategory === "旅費") {
+        selectedCategory = "旅費交通費";
+    }
+
     // =====================
     // DOM
     // =====================
@@ -19,7 +24,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const select = document.getElementById("categorySelect");
     const customInput = document.getElementById("customCategory");
-    const customWrapper = customInput.closest("div");
 
     const categoryArea = document.getElementById("categoryArea");
 
@@ -39,42 +43,38 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     // =====================
-    // カテゴリ描画
+    // 🌟 変更：関数名を setupCategoryUI に変更
     // =====================
-    function renderCategories(categories) {
-
+    function setupCategoryUI(categories) {
         categoryArea.innerHTML = "";
-
         select.innerHTML = '<option value="">選択してください</option>';
+        customInput.value = ""; // タブ切り替え時用にリセット
 
         // =====================
-        // 支出
+        // 支出タブの処理
         // =====================
         if (selectedType === "expense") {
+            const main = ["食費", "消耗品費", "雑費"];
 
-            const main = ["食費","消耗品費","雑費"];
-
+            // クイックボタンにないものをセレクトボックスに追加
             categories.forEach(cat => {
                 if (!main.includes(cat)) {
                     select.add(new Option(cat, cat));
                 }
             });
 
-
+            // メインカテゴリをボタンとして配置
             main.forEach(cat => {
-
                 const btn = createBtn(cat);
                 categoryArea.appendChild(btn);
 
                 if (selectedCategory === cat) {
-                    activate(btn, cat);
+                    activateButton(btn, cat);
                 }
             });
 
-
-            // ★既存カテゴリがmainじゃない場合
+            // セレクトボックス、または手入力への値の復元
             if (!main.includes(selectedCategory) && selectedCategory) {
-
                 if (categories.includes(selectedCategory)) {
                     select.value = selectedCategory;
                 } else {
@@ -83,126 +83,122 @@ window.addEventListener("DOMContentLoaded", () => {
             }
 
         } else {
-
             // =====================
-            // 収入
+            // 収入タブの処理
             // =====================
-            const incomeBtns = ["給与","賞与","雑収入","副業収入"];
-
+            const incomeBtns = ["給与", "賞与", "雑収入", "副業収入"];
 
             incomeBtns.forEach(cat => {
-
                 const btn = createBtn(cat);
                 categoryArea.appendChild(btn);
 
                 if (selectedCategory === cat) {
-                    activate(btn, cat);
+                    activateButton(btn, cat);
                 }
             });
 
-            // ★既存が手入力なら
-            if (!incomeBtns.includes(selectedCategory)) {
-                customInput.value = selectedCategory || "";
+            // 固定ボタンに無い場合は手入力欄に復元
+            if (!incomeBtns.includes(selectedCategory) && selectedCategory) {
+                customInput.value = selectedCategory;
             }
         }
-        // 初期選択を反映
-        if (selectedCategory) {
-            const buttons = document.querySelectorAll("#categoryArea button");
 
+        // 🌟【バグガード】ボタンの文字と完全一致する状態があれば確実に光らせる
+        if (selectedCategory) {
+            const buttons = categoryArea.querySelectorAll("button");
             buttons.forEach(btn => {
                 if (btn.textContent === selectedCategory) {
                     btn.classList.add("bg-secondary", "text-on-secondary");
                 }
             });
-
-            // ボタンに無い場合 → 手入力へ
-            if (![...buttons].some(b => b.textContent === selectedCategory)) {
-                customInput.value = selectedCategory;
-            }
         }
     }
 
     // =====================
-    // 共通UI
+    // 共通UIヘルパー
     // =====================
     function createBtn(cat) {
         const btn = document.createElement("button");
         btn.textContent = cat;
-
         btn.className =
-            "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-secondary hover:text-on-secondary";
+            "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant transition-colors hover:bg-secondary hover:text-on-secondary";
 
         btn.addEventListener("click", () => {
-            activate(btn, cat);
+            activateButton(btn, cat);
         });
 
         return btn;
     }
 
-    function activate(btn, value) {
+    // 🌟 変更：関数名を明確に（activate -> activateButton）
+    function activateButton(btn, value) {
         selectedCategory = value;
-        select.value = ""; //
-
-        clearActive();
-
-        btn.classList.add("bg-secondary","text-on-secondary");
-
+        select.value = ""; 
         customInput.value = "";
+
+        clearActiveButtons();
+        if (btn) {
+            btn.classList.add("bg-secondary", "text-on-secondary");
+        }
     }
 
-    function clearActive() {
+    // 🌟 変更：関数名を明確に（clearActive -> clearActiveButtons）
+    function clearActiveButtons() {
         categoryArea.querySelectorAll("button").forEach(b => {
-            b.classList.remove("bg-secondary","text-on-secondary");
+            b.classList.remove("bg-secondary", "text-on-secondary");
         });
     }
 
     // =====================
-    // タブ
+    // タブ切り替えイベント
     // =====================
     function setActiveTab(type) {
         if (type === "expense") {
-            tabExpense.classList.add("bg-secondary","text-on-secondary");
-            tabIncome.classList.remove("bg-secondary","text-on-secondary");
+            tabExpense.classList.add("bg-secondary", "text-on-secondary");
+            tabIncome.classList.remove("bg-secondary", "text-on-secondary");
         } else {
-            tabIncome.classList.add("bg-secondary","text-on-secondary");
-            tabExpense.classList.remove("bg-secondary","text-on-secondary");
+            tabIncome.classList.add("bg-secondary", "text-on-secondary");
+            tabExpense.classList.remove("bg-secondary", "text-on-secondary");
         }
     }
 
     tabExpense.addEventListener("click", () => {
         selectedType = "expense";
+        selectedCategory = ""; // タブを切り替えたら選択中カテゴリはリセット
         setActiveTab("expense");
-        renderCategories(CATEGORY_MAP.expense);
+        setupCategoryUI(CATEGORY_MAP.expense); // 🌟 関数名変更を反映
     });
 
     tabIncome.addEventListener("click", () => {
         selectedType = "income";
+        selectedCategory = ""; // タブを切り替えたら選択中カテゴリはリセット
         setActiveTab("income");
-        renderCategories(CATEGORY_MAP.income);
+        setupCategoryUI(CATEGORY_MAP.income); // 🌟 関数名変更を反映
     });
 
     // 初期描画
     setActiveTab(selectedType);
-    renderCategories(CATEGORY_MAP[selectedType]);
+    setupCategoryUI(CATEGORY_MAP[selectedType]); // 🌟 関数名変更を反映
 
     // =====================
-    // 入力変更
+    // セレクト・手入力の連動イベント
     // =====================
     select.addEventListener("change", (e) => {
         selectedCategory = e.target.value;
         customInput.value = "";
+        clearActiveButtons(); // セレクトを選んだらボタンの光を消す
     });
 
     customInput.addEventListener("input", (e) => {
         selectedCategory = e.target.value;
         select.value = "";
+        clearActiveButtons(); // 手入力したらボタンの光を消す
     });
 
     // =====================
     // 保存（UPDATE）
     // =====================
     saveBtn.addEventListener("click", async () => {
-
         const payload = {
             id: data.id,
             store_name: document.getElementById("storeName").value,
@@ -230,7 +226,6 @@ window.addEventListener("DOMContentLoaded", () => {
     // =====================
     // 削除
     // =====================
-
     if (deleteBtn) {
         deleteBtn.addEventListener("click", async () => {
             if (!confirm("本当に削除しますか？")) return;
@@ -247,5 +242,4 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
 });

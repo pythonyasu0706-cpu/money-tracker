@@ -48,17 +48,28 @@ window.addEventListener("DOMContentLoaded", async () => {
         // =====================
         // OCR結果反映
         // =====================
+        const store = document.getElementById("storeName");
+        const dateInput = document.getElementById("date");
+        const amount = document.getElementById("amount");
         if (data.result) {
-            const store = document.getElementById("storeName");
-            const date = document.getElementById("date");
-            const amount = document.getElementById("amount");
-
             if (store) store.value = data.result.store_name || "";
-            if (date) {
-                const formatted = formatDate(data.result.date);
-                date.value = formatted || new Date().toISOString().split("T")[0];
-            }
             if (amount) amount.value = data.result.total_amount || "";
+        }
+
+        // 2. 日付のセット（最優先：DBに保存された日付 ➔ 次点：AIの解析結果 ➔ 最終保険：今日）
+        if (dateInput) {
+            // routes.py から渡ってきた「data.date」（2026-06-08 形式）を最優先にする
+            if (data.date) {
+                dateInput.value = data.date;
+            } 
+            // もし無ければ、AIの生データからパースを試みる
+            else if (data.result && data.result.date) {
+                dateInput.value = formatDate(data.result.date);
+            } 
+            // どちらも完全に空っぽの場合だけ、今日の入力日にする
+            else {
+                dateInput.value = new Date().toISOString().split("T")[0];
+            }
         }
 
         // =====================
@@ -67,11 +78,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         renderCategories(data.categories || []);
 
         function renderCategories(categories) {
-
             const categoryArea = document.getElementById("categoryArea");
             const select = document.getElementById("categorySelect");
             const customInput = document.getElementById("customCategory");
 
+            // 前回のブレ対策を適用して「旅費」を「旅費交通費」に
             const allCategories = [
                 "食費", "消耗品費", "旅費交通費",
                 "交際費", "通信費", "水道光熱費",
@@ -83,8 +94,10 @@ window.addEventListener("DOMContentLoaded", async () => {
             // UIリセット
             categoryArea.innerHTML = "";
 
-            // 初期状態
-            selectedCategory = "";
+            // 初期状態は、前回保存されたカテゴリー（あれば）をセット
+            const savedCategory = data.category || "";
+            selectedCategory = savedCategory;
+            
             select.options.length = 0;
             select.add(new Option("選択してください", ""));
             select.value = "";
@@ -97,49 +110,73 @@ window.addEventListener("DOMContentLoaded", async () => {
             // =====================
             // ボタン選択処理
             // =====================
-            function setActive(btn,value) {
+            function setActive(btn, value) {
                 selectedCategory = value;
 
-                // ★追加：selectとinputをリセット
+                // selectとinputをリセット
                 select.value = "";
                 customInput.value = "";
 
                 categoryArea.querySelectorAll("button").forEach(b => {
-                    // 全部リセット
                     b.classList.remove("bg-secondary", "text-on-secondary");
-                    // hover時
                     b.classList.add("hover:bg-secondary", "hover:text-on-secondary");
                 });
 
-                // 選択ボタン
-                btn.classList.add("bg-secondary", "text-on-secondary");
-
-                 // ★重要：hoverを消す（これやらないと色ぶれる）
-                btn.classList.remove("hover:bg-secondary", "hover:text-on-secondary");
+                if (btn) {
+                    btn.classList.add("bg-secondary", "text-on-secondary");
+                    btn.classList.remove("hover:bg-secondary", "hover:text-on-secondary");
+                }
             }
 
             // =====================
-            // AI候補ボタン
+            // AI候補ボタン生成
             // =====================
-            categories.forEach((cat, index) => {
+            let matchedBtn = null;
+
+            categories.forEach((cat) => {
+                // 表記ゆれ補正
+                if (cat === "交通費" || cat === "旅費") {
+                    cat = "旅費交通費";
+                }
 
                 const btn = document.createElement("button");
                 btn.textContent = cat;
-
                 btn.className =
                     "px-4 py-2 rounded-full font-body-sm border border-outline-variant text-on-surface-variant transition-colors hover:bg-secondary hover:text-on-secondary";
+                
                 btn.addEventListener("click", () => {
-                    setActive(btn,cat);
+                    setActive(btn, cat);
                 });
 
                 categoryArea.appendChild(btn);
+
+                // もしこのボタンの文字が「前回保存されたカテゴリー」と一致したらキープ
+                if (savedCategory && cat === savedCategory) {
+                    matchedBtn = btn;
+                }
             });
 
-            // 1個目を選択状態
-            if (categories.length > 0) {
+            // =====================
+            // 初期選択の復元ロジック（★ここがポイント）
+            // =====================
+            if (savedCategory) {
+                // パターンA: 前回保存した値がAIのボタン候補の中にある場合
+                if (matchedBtn) {
+                    setActive(matchedBtn, savedCategory);
+                } 
+                // パターンB: 固定セレクトボックスの中にある基本カテゴリーの場合
+                else if (allCategories.includes(savedCategory)) {
+                    select.value = savedCategory;
+                } 
+                // パターンC: それ以外（ユーザーオリジナルの手入力カテゴリ）の場合
+                else {
+                    customInput.value = savedCategory;
+                }
+            } else if (categories.length > 0) {
+                // 初回登録時（保存されたカテゴリがまだ無い）は、今まで通りAI候補の1個目を選択
                 const firstBtn = categoryArea.querySelector("button");
                 if (firstBtn) {
-                    setActive(firstBtn, categories[0]);
+                    setActive(firstBtn, categories[0] === "交通費" || categories[0] === "旅費" ? "旅費交通費" : categories[0]);
                 }
             }
 
@@ -148,12 +185,11 @@ window.addEventListener("DOMContentLoaded", async () => {
             // =====================
             select.addEventListener("change", () => {
                 selectedCategory = select.value;
-
-                // ★ここ追加（ボタン見た目リセット）
                 categoryArea.querySelectorAll("button").forEach(b => {
                     b.classList.remove("bg-secondary", "text-on-secondary");
                     b.classList.add("hover:bg-secondary", "hover:text-on-secondary");
                 });
+                if (select.value) customInput.value = ""; // 入力欄をクリア
             });
 
             // =====================
@@ -161,20 +197,12 @@ window.addEventListener("DOMContentLoaded", async () => {
             // =====================
             customInput.addEventListener("input", () => {
                 selectedCategory = customInput.value;
-
-                // ボタン見た目リセット
                 categoryArea.querySelectorAll("button").forEach(b => {
                     b.classList.remove("bg-secondary", "text-on-secondary");
                     b.classList.add("hover:bg-secondary", "hover:text-on-secondary");
                 });
-                // selectもリセット
                 select.value = "";
             });
-
-
-            // デバッグ
-            // console.log("categories:", categories);
-
         }
 
         // =====================

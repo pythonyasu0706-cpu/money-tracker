@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     let selectedCategory = "";
     let selectedType = "expense";
 
-    
     // =====================
     // DOM取得
     // =====================
@@ -28,16 +27,15 @@ window.addEventListener("DOMContentLoaded", async () => {
             "交際費", "通信費", "水道光熱費",
             "地代家賃", "広告宣伝費", "会議費", "雑費"
         ],
-            income: [
+        income: [
             "給与", "副業収入", "賞与", "雑収入"
         ]
     };
 
     // =====================
-    // カテゴリ描画（これが本体）
+    // 🌟 変更：関数名を initCategoryUI に変更
     // =====================
-    function renderCategories(categories) {
-
+    function initCategoryUI(categories) {
         const categoryArea = document.getElementById("categoryArea");
         categoryArea.innerHTML = "";
 
@@ -67,15 +65,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 
             // ===== ボタン =====
             mainCategories.forEach(cat => {
-
                 const btn = document.createElement("button");
                 btn.textContent = cat;
-
                 btn.className =
-                    "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-secondary hover:text-on-secondary";
+                    "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant transition-colors hover:bg-secondary hover:text-on-secondary";
 
                 btn.addEventListener("click", () => {
-
                     selectedCategory = cat;
 
                     categoryArea.querySelectorAll("button").forEach(b => {
@@ -96,12 +91,10 @@ window.addEventListener("DOMContentLoaded", async () => {
             // ===== その他 =====
             const otherBtn = document.createElement("button");
             otherBtn.textContent = "その他";
-
             otherBtn.className =
-                "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant";
+                "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant transition-colors hover:bg-secondary hover:text-on-secondary";
 
             otherBtn.addEventListener("click", () => {
-
                 selectedCategory = "";
 
                 customWrapper.classList.remove("hidden");
@@ -112,19 +105,16 @@ window.addEventListener("DOMContentLoaded", async () => {
                 });
 
                 otherBtn.classList.add("bg-secondary", "text-on-secondary");
-
                 customInput.focus();
             });
 
             categoryArea.appendChild(otherBtn);
 
         } else {
-
             // =====================
             // ★収入モード
             // =====================
-
-            const incomeButtons = ["給与", "賞与", "雑収入"];
+            const incomeButtons = ["給与", "賞与", "雑収入", "副業収入"]; // ★「副業収入」を固定枠に追加して統一
 
             // ▼ selectは使わない
             select.classList.add("hidden");
@@ -133,15 +123,12 @@ window.addEventListener("DOMContentLoaded", async () => {
             customWrapper.classList.remove("hidden");
 
             incomeButtons.forEach(cat => {
-
                 const btn = document.createElement("button");
                 btn.textContent = cat;
-
                 btn.className =
                     "px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:bg-secondary hover:text-on-secondary";
 
                 btn.addEventListener("click", () => {
-
                     selectedCategory = cat;
 
                     categoryArea.querySelectorAll("button").forEach(b => {
@@ -175,17 +162,18 @@ window.addEventListener("DOMContentLoaded", async () => {
     tabExpense.addEventListener("click", () => {
         selectedType = "expense";
         setActiveTab("expense");
-        renderCategories(CATEGORY_MAP.expense);
+        initCategoryUI(CATEGORY_MAP.expense); // 🌟 変更を反映
     });
 
     tabIncome.addEventListener("click", () => {
         selectedType = "income";
         setActiveTab("income");
-        renderCategories(CATEGORY_MAP.income);
+        initCategoryUI(CATEGORY_MAP.income); // 🌟 変更を反映
     });
+
     // 初期表示
     setActiveTab("expense");
-    renderCategories(CATEGORY_MAP.expense);
+    initCategoryUI(CATEGORY_MAP.expense); // 🌟 変更を反映
 
     // =====================
     // select / input
@@ -193,21 +181,26 @@ window.addEventListener("DOMContentLoaded", async () => {
     select.addEventListener("change", (e) => {
         selectedCategory = e.target.value;
         customInput.value = "";
+        // 「その他」の中に隠れているセレクトボックスを選んだらボタンの光をリセット
+        document.getElementById("categoryArea").querySelectorAll("button").forEach(b => {
+            if(b.textContent !== "その他") b.classList.remove("bg-secondary", "text-on-secondary");
+        });
     });
 
     customInput.addEventListener("input", (e) => {
         selectedCategory = e.target.value;
         select.value = "";
+        document.getElementById("categoryArea").querySelectorAll("button").forEach(b => {
+            if(b.textContent !== "その他") b.classList.remove("bg-secondary", "text-on-secondary");
+        });
     });
 
     // =====================
     // 保存
     // =====================
     saveBtn.addEventListener("click", async () => {
-
         const amountInput = document.getElementById("amount").value.trim();
 
-        // ★ここ追加
         if (!amountInput) {
             alert("金額を入力してください");
             return;
@@ -226,7 +219,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         const payload = {
             store_name: document.getElementById("storeName").value,
             date: document.getElementById("date").value,
-            amount: Number(amountInput), // ← ここも重要（数値に変換）
+            amount: Number(amountInput),
             category: selectedCategory,
             type: selectedType
         };

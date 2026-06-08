@@ -17,6 +17,7 @@ from app.routes.analysis.routes import analysis_bp
 from app.routes.transaction.routes import transaction_bp
 from app.models.user import User
 from app.models.transaction import Transaction
+from app.models.token import EmailVerificationToken, PasswordResetToken
 
 load_dotenv()
 

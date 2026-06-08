@@ -37,7 +37,7 @@ class ReceiptAIService:
     - total_amount（合計金額）
     - categories（勘定科目の候補を3つ、日本語で）
 
-    勘定科目は以下から選んでください：
+    勘定科目は必ず以下のリストにある文言と「完全に一致するもの」だけから選んでください。省略してはいけません（例：「旅費交通費」を「交通費」としないこと）：
     消耗品費、旅費交通費、交際費、通信費、水道光熱費、雑費、食費
 
     必ずJSONだけ返してください。
@@ -59,6 +59,12 @@ class ReceiptAIService:
         # categoriesがない場合の保険
         if "categories" not in result:
             result["categories"] = ["雑費", "消耗品費", "その他"]
+        else:
+            # ★追加：AIが指示を無視して「交通費」と返してきた場合の強力な表記揺れガード
+            result["categories"] = [
+                "旅費交通費" if cat == "交通費" else cat 
+                for cat in result["categories"]
+            ]
 
         return result
     

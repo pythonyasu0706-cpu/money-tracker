@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // カテゴリごとの色（フラスク関数で決めたカードの色と揃える）
     const colorMap = {
         "食費": "bg-amber-300 text-on-tertiary-fixed-variant",
-        "交通費": "bg-purple-300 text-on-secondary-fixed-variant",
+        "旅費交通費": "bg-purple-300 text-on-secondary-fixed-variant",
         "消耗品費": "bg-tertiary-fixed text-on-surface-variant",
         "その他": "bg-secondary-fixed text-on-surface-variant",
         "all": "bg-secondary-container text-on-secondary-container"
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const keyword = searchInput?.value?.toLowerCase() || "";
         const filter = currentFilter;
         // 除外カテゴリ
-        const excludeCategories = ["食費", "消耗品費", "交通費"];
+        const excludeCategories = ["食費", "消耗品費", "旅費交通費"];
             
         // 全カードを1つずつ判定
         cards.forEach(card => {
