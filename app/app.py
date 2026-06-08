@@ -53,6 +53,11 @@ def create_app():
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_pre_ping": True,
+        "pool_recycle": 300
+    }
+    
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 警告を非表示にするため推奨
 
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
