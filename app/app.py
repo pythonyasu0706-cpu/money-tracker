@@ -57,7 +57,7 @@ def create_app():
         "pool_pre_ping": True,
         "pool_recycle": 300
     }
-    
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # 警告を非表示にするため推奨
 
     app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -73,10 +73,6 @@ def create_app():
         api_key=os.getenv("CLOUDINARY_API_KEY"),
         api_secret=os.getenv("CLOUDINARY_API_SECRET")
     )
-
-    app.ocr = OCRService()
-    app.ai = ReceiptAIService()
-
 
     @login_manager.user_loader
     def load_user(user_id):
